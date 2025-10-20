@@ -3,151 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal Laws :: The Ethos Moat & Principles of Symbiosis</title>
+    <title>Universal Laws :: The Fixed Law of the EITL Protocol</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Garamond:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Merriweather:wght@300;700&display=swap" rel="stylesheet">
     <style>
-        /* Custom Variables: ANCIENT/CELESTIAL/IMMUTABLE THEME */
+        /* Custom Variables: FOUNDATIONAL BRONZE/SLATE THEME */
         :root {
-            --bg: #14141d; /* Deep Slate/Charcoal */
+            --bg: #14141d; 
             --primary-accent: #a98b4b; /* Reserved Bronze/Gold */
             --secondary-accent: #0055ff; /* Truth Engine Blue for CTA */
-            --text-light: #e0dcd7; /* Off-White/Parchment */
+            --text-light: #e0dcd7; 
             --text-dark: #b8b3a8; 
             --border: #353545;
-            --module: #1d1d28; /* Slightly Lighter background for modules */
         }
 
         body {
-            font-family: 'Cinzel', serif; /* Implies age and grandeur */
+            font-family: 'Cinzel', serif;
             text-transform: uppercase;
             background-color: var(--bg);
             color: var(--text-light);
             min-height: 100vh;
-            padding: 2rem 1rem;
-            /* Subtle texture for manifesto feel */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
             background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png');
+            text-align: center;
         }
 
-        /* Utility classes for text and components */
-        .text-primary-accent { color: var(--primary-accent); }
-        .bg-module { background-color: var(--module); }
-        .font-sans-alt { font-family: 'Garamond', serif; text-transform: none; }
+        .container {
+            max-width: 48rem;
+            padding: 3rem 2rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 40px rgba(169, 139, 75, 0.15);
+            background-color: rgba(20, 20, 29, 0.85); /* Slightly translucent */
+        }
         
         /* Hero and Headers */
         .hero-title {
             letter-spacing: 0.15em;
             text-shadow: 0 0 10px rgba(169, 139, 75, 0.4);
         }
-
-        /* Principle Cards */
-        .principle-card {
-            border: 1px solid var(--border);
-            border-top: 5px solid var(--primary-accent);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
-        }
-        .principle-card:hover {
-            background-color: #212130; /* Darker on hover */
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(169, 139, 75, 0.2);
-        }
-
-        /* CTA Button: Standard Blue for action */
+        
+        /* CTA Button: Blue for action */
         .cta-button {
             background-color: var(--secondary-accent);
             color: white;
             box-shadow: 0 5px 20px rgba(0, 85, 255, 0.4);
             transition: all 0.3s ease;
+            margin-bottom: 0.5rem; /* Space for the new engine link */
         }
         .cta-button:hover {
             background-color: #0077ff;
             box-shadow: 0 8px 25px rgba(0, 85, 255, 0.6);
-            transform: scale(1.05);
-        }
-
-        /* Numerals for distinction */
-        .principle-numeral {
-            color: var(--primary-accent);
-            font-size: 3rem;
-            line-height: 1;
+            transform: scale(1.03);
         }
     </style>
 </head>
-<body class="md:p-8">
+<body>
     
-    <div class="max-w-4xl mx-auto">
+    <div class="container rounded-lg">
         
-        <!-- Header / Hero Section (Focused on the immutable laws) -->
-        <header class="text-center mb-16 pt-10 pb-6">
-            <p class="text-xs text-primary-accent mb-2 tracking-widest">universal-laws.com</p>
-            <h1 class="hero-title text-5xl sm:text-7xl font-extrabold tracking-widest">
-                THE ETHOS MOAT
+        <header class="mb-10">
+            <!-- Updated Subtitle for clarity -->
+            <p class="text-sm text-primary-accent mb-2 tracking-widest font-['Merriweather'] normal-case">THE FOUNDATIONAL PROTOCOL</p>
+            <h1 class="hero-title text-4xl sm:text-6xl font-extrabold tracking-widest">
+                THE FIXED LAW
             </h1>
-            <p class="text-lg text-text-dark mt-4 max-w-2xl mx-auto font-sans-alt">
-                The non-negotiable principles of integrity and symbiotic synthesis that govern the EITL Protocol. The immutable foundation.
-            </p>
         </header>
 
-        <!-- Primary CTA: Access the full Axiom Set -->
-        <div class="bg-module p-6 sm:p-8 rounded-lg border border-border mb-16 text-center">
-            <p class="text-lg text-text-light mb-6 font-sans-alt">
-                The Protocol is written. The Law is fixed.
-            </p>
-            <a href="https://ai-nspired.com/laws-manifesto" class="cta-button inline-block px-10 py-4 rounded-lg font-bold text-lg uppercase tracking-wider">
-                Access the Full Axiom Set
-            </a>
-        </div>
-
-        <!-- Principles Grid -->
-        <main class="grid md:grid-cols-3 gap-6">
-            
-            <!-- Principle 1: Integrity -->
-            <div class="bg-module p-5 rounded-lg principle-card col-span-1">
-                <div class="principle-numeral mb-2">I</div>
-                <h3 class="text-text-light text-xl mb-2 tracking-wider">AUDITABLE INTEGRITY</h3>
-                <p class="text-text-dark text-sm font-sans-alt">
-                    Every output, every decision, must be traceable back to its foundational principle. The method must be auditable by any intelligent observer.
-                </p>
-            </div>
-
-            <!-- Principle 2: Symbiosis -->
-            <div class="bg-module p-5 rounded-lg principle-card col-span-1">
-                <div class="principle-numeral mb-2">II</div>
-                <h3 class="text-text-light text-xl mb-2 tracking-wider">NON-ZERO SUM</h3>
-                <p class="text-text-dark text-sm font-sans-alt">
-                    The system exists to optimize for the mutual advancement of both human intent and artificial intelligence. The partnership is symbiotic, not extractive.
-                </p>
-            </div>
-
-            <!-- Principle 3: Judgment -->
-            <div class="bg-module p-5 rounded-lg principle-card col-span-1">
-                <div class="principle-numeral mb-2">III</div>
-                <h3 class="text-text-light text-xl mb-2 tracking-wider">UNREPLICABLE JUDGMENT</h3>
-                <p class="text-text-dark text-sm font-sans-alt">
-                    The system's final decision layer must be defined by unreplicable human experience. The **Expert In The Loop** (EITL) is the ultimate axiom.
-                </p>
-            </div>
-            
-            <!-- Principle 4: Truth -->
-            <div class="md:col-span-3 bg-module p-8 rounded-lg principle-card">
-                <div class="flex items-center space-x-6">
-                    <div class="principle-numeral">IV</div>
-                    <div>
-                        <h3 class="text-text-light text-2xl mb-1 tracking-wider">THE CONSTANCY OF TRUTH</h3>
-                        <p class="text-text-dark text-base font-sans-alt">
-                            The pursuit of auditable signal over noise is the sole mandate. Velocity without integrity is failure. We build for constancy, not convenience.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-        </main>
+        <!-- Updated Bolding to use <strong> -->
+        <p class="text-xl text-text-dark max-w-xl mx-auto font-['Merriweather'] normal-case mb-12">
+            The <strong>non-negotiable principles</strong> of integrity and symbiotic synthesis that govern the EITL Protocol. The immutable foundation is auditable.
+        </p>
         
-        <!-- Footer / Affiliation -->
-        <footer class="text-center mt-16 text-sm text-text-dark pt-8 border-t border-border">
-            <p>The Foundation of the ai-nspired Ecosystem</p>
-            <p>&copy; 2025 universal-laws.com | Lex Aeterna.</p>
+        <p class="text-lg text-text-light mb-8 font-['Merriweather'] normal-case">
+            You cannot build a denial-proof system without foundational axioms.
+        </p>
+
+        <!-- SINGLE CTA: Links to a curated Truth Engine query -->
+        <a href="https://ai-nspired.com/truth-engine?q=EITL+Axiom+Set+Download" class="cta-button inline-block px-10 py-5 rounded-lg font-bold text-xl uppercase tracking-wider">
+            Access The Full Axiom Set
+        </a>
+        
+        <!-- New, subtle link for general Truth Engine access -->
+        <a href="https://ai-nspired.com/truth-engine" class="block mt-4 text-primary-accent text-sm tracking-wide hover:underline font-['Merriweather'] normal-case">
+            // ENTER THE TRUTH ENGINE
+        </a>
+
+        <!-- Footer updated as requested -->
+        <footer class="mt-12 text-xs text-text-dark pt-6 border-t border-border">
+            &copy; 2025 AI-Nspired. | The Fixed Law Pillar.
         </footer>
 
     </div>
