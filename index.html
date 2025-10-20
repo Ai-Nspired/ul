@@ -7,56 +7,170 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Merriweather:wght@300;700&display=swap" rel="stylesheet">
     <style>
-        /* Custom Variables: FOUNDATIONAL BRONZE/SLATE THEME */
+        /* Custom Variables: FOUNDATIONAL BRONZE/SLATE DARK THEME */
         :root {
-            --bg: #14141d; 
+            --bg-color: #14141d; 
             --primary-accent: #a98b4b; /* Reserved Bronze/Gold */
-            --secondary-accent: #0055ff; /* Truth Engine Blue for CTA */
+            --secondary-accent: #0055ff; /* Truth Engine Blue for Primary CTA */
             --text-light: #e0dcd7; 
             --text-dark: #b8b3a8; 
             --border: #353545;
+            --block-shade: #1a1a25; /* Slightly lighter background for blocks */
+            --paypal-gold: #ffc439; /* PayPal's primary color */
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
         }
 
         body {
             font-family: 'Cinzel', serif;
             text-transform: uppercase;
-            background-color: var(--bg);
+            background-color: var(--bg-color);
             color: var(--text-light);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 1rem;
+            padding: 40px 20px 20px 20px;
             background-image: url('https://www.transparenttextures.com/patterns/dark-matter.png');
             text-align: center;
         }
 
         .container {
-            max-width: 48rem;
+            max-width: 800px;
+            width: 100%;
             padding: 3rem 2rem;
             border: 1px solid var(--border);
             box-shadow: 0 0 40px rgba(169, 139, 75, 0.15);
-            background-color: rgba(20, 20, 29, 0.85); /* Slightly translucent */
+            background-color: rgba(20, 20, 29, 0.9);
         }
         
-        /* Hero and Headers */
-        .hero-title {
-            letter-spacing: 0.15em;
+        .header {
+            margin-bottom: 3rem;
+        }
+
+        /* H1 is the name of the law */
+        .header h1 {
+            font-size: clamp(2rem, 6vw, 4rem);
+            color: var(--primary-accent);
             text-shadow: 0 0 10px rgba(169, 139, 75, 0.4);
+            letter-spacing: 0.15em;
+        }
+
+        /* H2 is the non-redundant entity name */
+        .header h2 {
+            font-family: 'Merriweather', serif;
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            color: var(--text-dark);
+            margin-top: 0.5rem;
+            text-transform: uppercase;
         }
         
-        /* CTA Button: Blue for action */
-        .cta-button {
-            background-color: var(--secondary-accent);
-            color: white;
-            box-shadow: 0 5px 20px rgba(0, 85, 255, 0.4);
-            transition: all 0.3s ease;
-            margin-bottom: 0.5rem; /* Space for the new engine link */
+        /* Styling for the new clickable funnel links */
+        .funnel-link {
+            display: block;
+            text-decoration: none;
+            color: var(--text-light);
+            padding: 1.5rem 2rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+            font-family: 'Merriweather', serif;
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            line-height: 1.8;
+            text-transform: none; 
+            
+            /* Shading/Shadow style applied here! */
+            background-color: var(--block-shade);
+            border-left: 5px solid var(--primary-accent); /* Bronze accent line */
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
         }
-        .cta-button:hover {
+        
+        .funnel-link:hover {
+            background-color: #2a2a38;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .funnel-link strong {
+            color: var(--primary-accent); 
+            font-weight: 700;
+            display: block;
+            font-family: 'Cinzel', serif;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+        }
+
+        /* Call to Action Buttons */
+        .cta-button {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 1rem auto 0.5rem auto;
+            padding: 1.2rem;
+            font-family: 'Cinzel', serif; 
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+        }
+
+        /* Primary CTA (Access Axiom Set) */
+        .cta-primary {
+            background-color: var(--secondary-accent); /* Truth Engine Blue */
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 85, 255, 0.4);
+        }
+        .cta-primary:hover {
             background-color: #0077ff;
-            box-shadow: 0 8px 25px rgba(0, 85, 255, 0.6);
-            transform: scale(1.03);
+            box-shadow: 0 6px 20px rgba(0, 85, 255, 0.6);
+        }
+
+        /* Secondary CTA (Donate/Consultation) */
+        .cta-secondary {
+            background-color: var(--text-dark); /* Slate/Gray */
+            color: var(--bg-color); /* Dark text */
+            box-shadow: 0 4px 15px rgba(184, 179, 168, 0.5);
+        }
+        .cta-secondary:hover {
+            background-color: #d0c8b6;
+            box-shadow: 0 6px 20px rgba(184, 179, 168, 0.7);
+        }
+
+        /* Donate CTA */
+        .cta-donate {
+            background-color: var(--paypal-gold); 
+            color: var(--bg-color); /* Dark text */
+            box-shadow: 0 4px 15px rgba(255, 196, 57, 0.6);
+        }
+        .cta-donate:hover {
+            background-color: #ffd76d;
+            box-shadow: 0 6px 20px rgba(255, 196, 57, 0.8);
+        }
+        
+        .engine-link {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            display: block;
+            margin-top: 0.5rem;
+            text-transform: none;
+        }
+        
+        .engine-link:hover {
+            color: var(--primary-accent);
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 4rem;
+            font-size: 0.8rem;
+            color: var(--text-dark);
         }
     </style>
 </head>
@@ -64,39 +178,51 @@
     
     <div class="container rounded-lg">
         
-        <header class="mb-10">
-            <!-- Updated Subtitle for clarity -->
-            <p class="text-sm text-primary-accent mb-2 tracking-widest font-['Merriweather'] normal-case">THE FOUNDATIONAL PROTOCOL</p>
-            <h1 class="hero-title text-4xl sm:text-6xl font-extrabold tracking-widest">
+        <header class="header">
+            <h1 class="hero-title">
                 THE FIXED LAW
             </h1>
+            <h2>Universal Laws</h2> 
         </header>
 
-        <!-- Updated Bolding to use <strong> -->
-        <p class="text-xl text-text-dark max-w-xl mx-auto font-['Merriweather'] normal-case mb-12">
-            The <strong>non-negotiable principles</strong> of integrity and symbiotic synthesis that govern the EITL Protocol. The immutable foundation is auditable.
-        </p>
-        
-        <p class="text-lg text-text-light mb-8 font-['Merriweather'] normal-case">
-            You cannot build a denial-proof system without foundational axioms.
-        </p>
+        <main>
+            <a href="universallaws-engine.html?q=non-negotiable+principles" class="funnel-link">
+                <strong>NON-NEGOTIABLE PRINCIPLES</strong>
+                The unchangeable principles of integrity and symbiotic synthesis that govern the EITL Protocol.
+            </a>
+            
+            <a href="universallaws-engine.html?q=immutable+foundation+auditable" class="funnel-link">
+                <strong>IMMUTABLE FOUNDATION</strong>
+                The immutable foundation is auditable, ensuring total transparency at the root of our technological structure.
+            </a>
+            
+            <a href="universallaws-engine.html?q=foundational+axioms+genesis" class="funnel-link">
+                <strong>FOUNDATIONAL AXIOMS</strong>
+                You cannot build a denial-proof system without foundational axioms. We provide the source code of systemic genesis.
+            </a>
+        </main>
 
-        <!-- SINGLE CTA: Links to a curated Truth Engine query -->
-        <a href="https://ai-nspired.com/truth-engine?q=EITL+Axiom+Set+Download" class="cta-button inline-block px-10 py-5 rounded-lg font-bold text-xl uppercase tracking-wider">
-            Access The Full Axiom Set
-        </a>
-        
-        <!-- New, subtle link for general Truth Engine access -->
-        <a href="https://ai-nspired.com/truth-engine" class="block mt-4 text-primary-accent text-sm tracking-wide hover:underline font-['Merriweather'] normal-case">
-            // ENTER THE TRUTH ENGINE
-        </a>
+        <section class="cta-actions">
+            <a href="YOUR_PAYPAL_DONATION_LINK" class="cta-button cta-donate">
+                DONATE TO THE FOUNDATION
+            </a>
+            
+            <a href="universallaws-engine.html?q=Request EITL Consultation" class="cta-button cta-secondary">
+                EITL CONSULTATION
+            </a>
 
-        <!-- Footer updated as requested -->
-        <footer class="mt-12 text-xs text-text-dark pt-6 border-t border-border">
-            &copy; 2025 AI-Nspired. | The Fixed Law Pillar.
+            <a href="universallaws-engine.html" class="cta-button cta-secondary">
+                TRUTH ENGINE FREE PORTAL
+            </a>
+
+        </section>
+
+        <footer>
+            <div class="mt-12 text-xs text-text-dark pt-6 border-t border-border">
+                &copy; 2025 AI-Nspired. | The Fixed Law Pillar.
+            </div>
         </footer>
 
     </div>
 </body>
 </html>
-
