@@ -1,261 +1,901 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI-Nspired :: Truth Engine Interface</title>
-<meta name="description" content="ai-nspired.com • truth-engine. memory keeper. Systems that don’t forget—or flinch.">
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;700&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Nspired :: Truth Engine Interface</title>
+    <meta name="description" content="ai-nspired.com • truth-engine. memory keeper. Systems that don’t forget—or flinch.">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;700&display=swap');
 
-    /* --- Mode Variables --- */
-    :root {
-        /* Default Silvery Mode */
-        --bg-color: #f8f8ff;
-        --text-color: #1a1a1a;
-        --border-color: #d0d0d0;
-        --modal-bg: #ffffff;
-        --accent-color: #1a2a3a;
-    }
-    [data-mode="dark"] {
-        --bg-color: #1a1a1a;
-        --text-color: #f0f0f0;
-        --border-color: #333333;
-        --modal-bg: #2a2a2a;
-        --accent-color: #c7a17a;
-    }
-    [data-mode="light"] {
-        --bg-color: #ffffff;
-        --text-color: #111111;
-        --border-color: #ccc;
-        --modal-bg: #f9f9f9;
-        --accent-color: #1a2a3a;
-    }
-    [data-mode="mystic"] {
-        --bg-color: #0f0f2a;
-        --text-color: #e0d0ff;
-        --border-color: #5a3f9a;
-        --modal-bg: #1a0f3f;
-        --accent-color: #a17ac7;
-    }
+        :root {
+            --bg-color: #f8f8ff;
+            --text-color: #1a1a1a;
+            --border-color: #d0d0d0;
+            --modal-bg: #ffffff;
+            --content-bg: #f8f8ff;
+            --content-text: #1a1a1a;
+            --accent-color: #1a2a3a;
+            --secondary-text: #6c757d;
+            --shadow-color: rgba(0,0,0,0.05);
+            --accent-color-rgb: 26, 42, 58;
+            --grid-bg: #e8e8e8;
+            --grid-cell-off: #cccccc;
+            --grid-cell-on: #1a2a3a;
+        }
+        [data-mode="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --border-color: #333333;
+            --modal-bg: #2a2a2a;
+            --content-bg: #111111;
+            --content-text: #f0f0f0;
+            --accent-color: #c7a17a;
+            --secondary-text: #9fa8da;
+            --shadow-color: rgba(0,0,0,0.3);
+            --accent-color-rgb: 199, 161, 122;
+            --grid-bg: #1a1a1a;
+            --grid-cell-off: #333333;
+            --grid-cell-on: #c7a17a;
+        }
+        [data-mode="neo"] {
+            --bg-color: #000000;
+            --text-color: #00FF00;
+            --border-color: #008800;
+            --modal-bg: #0d0d0d;
+            --content-bg: #1a1a1a;
+            --content-text: #00FF00;
+            --accent-color: #00FF00;
+            --secondary-text: #00AA00;
+            --shadow-color: transparent;
+            --accent-color-rgb: 0, 255, 0;
+            --grid-bg: #0d0d0d;
+            --grid-cell-off: #1a1a1a;
+            --grid-cell-on: #00FF00;
+        }
 
-    body {
-        margin: 0;
-        padding: 2rem;
-        font-family: 'Crimson Pro', serif;
-        background-color: var(--bg-color);
-        color: var(--text-color);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        box-sizing: border-box;
-        transition: background-color 0.3s, color 0.3s;
-    }
+        body {
+            margin: 0;
+            padding: 1.5rem 1rem;
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.1rem;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+            width: 100%;
+            position: relative;
+        }
+        @media (max-width: 600px) { body { padding: 1rem 0.5rem; } }
 
-    .terminal-window {
-        width: 100%;
-        max-width: 800px;
-        text-align: left;
-    }
+        .terminal-window {
+            width: 100%;
+            max-width: 800px;
+            text-align: left;
+        }
 
-    .typed-text {
-        font-weight: 700;
-        font-size: 1.5rem;
-        display: inline-block;
-        overflow: hidden;
-        white-space: nowrap;
-        border-right: 3px solid var(--accent-color);
-        animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
-    }
+        .typed-text {
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 0;
+            border-right: 3px solid var(--accent-color);
+            animation: blink-caret .75s step-end infinite;
+        }
+        .typed-text.is-typing {
+            animation: typing 3.5s steps(40, end) forwards, blink-caret .75s step-end infinite;
+        }
+        .typed-text.is-done {
+            animation: none;
+            border-right: none;
+            width: auto;
+        }
 
-    @keyframes typing { from { width: 0 } to { width: 100% } }
-    @keyframes blink-caret { 50% { border-color: var(--accent-color); } }
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { 50% { border-color: transparent; } }
 
-    .command-line {
-        display: flex;
-        align-items: center;
-        margin-top: 1rem;
-    }
+        .input-row {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+            width: 100%;
+        }
+        .command-line {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+        .command-line::before { content: '>'; margin-right: 1rem; font-weight: bold; }
 
-    .command-line::before { content: '>'; margin-right: 1rem; font-weight: bold; }
+        .search-input {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.5rem;
+            flex-grow: 1;
+            outline: none;
+            padding-right: 1rem;
+        }
+        .search-input:focus {
+            outline: 2px solid var(--accent-color);
+            outline-offset: 4px;
+            border-radius: 2px;
+        }
+        .history-toggle {
+            padding: 0.5rem 1rem;
+            margin-left: 1rem;
+            border: 1px solid var(--accent-color);
+            background: none;
+            color: var(--accent-color);
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            min-width: 80px;
+        }
+        .history-toggle:hover, .history-toggle:focus {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+        }
 
-    .search-input {
-        background: transparent;
-        border: none;
-        color: var(--text-color);
-        font-family: 'Crimson Pro', serif;
-        font-size: 1.5rem;
-        flex-grow: 1;
-        outline: none;
-    }
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-container {
+            background-color: var(--modal-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            width: 95%;
+            max-width: 900px;
+            height: 95vh;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            transition: background-color 0.3s, color 0.3s;
+            overflow: hidden;
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
+        .modal-title { font-weight: 700; color: var(--accent-color); }
+        .close-modal { background: none; border: none; color: var(--accent-color); font-size: 2rem; cursor: pointer; }
+        .close-modal:hover { color: var(--bg-color); background: var(--accent-color); border-radius: 50%; }
+        .result-container {
+            padding: 1rem 0;
+            flex-grow: 1;
+            overflow-y: auto;
+            font-family: 'Crimson Pro', serif;
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            scroll-behavior: smooth;
+        }
+        .conversation-block {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        .conversation-block:last-child {
+            border-bottom: none;
+        }
+        .conversation-block h4 {
+            margin: 0 0 0.5rem 0;
+            color: var(--accent-color);
+        }
+        .conversation-block .content {
+            box-shadow: 0 4px 10px var(--shadow-color);
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 4px;
+            transition: box-shadow 0.3s;
+            background-color: var(--content-bg);
+        }
+        [data-mode="neo"] .conversation-block .content {
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+        }
+        .modal-footer {
+            display: flex;
+            gap: 1rem;
+            justify-content: space-between;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+        .modal-footer button {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--accent-color);
+            background: none;
+            color: var(--accent-color);
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 4px;
+            min-width: 100px;
+        }
+        .modal-footer button:hover, .modal-footer button:focus {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+        }
 
-    /* --- Modal Styles --- */
-    .modal-overlay {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: rgba(0,0,0,0.8);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-    .modal-overlay.active { display: flex; }
+        .mode-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .mode-toggle button, .mode-toggle select {
+            padding: 0.5rem;
+            border: 1px solid var(--accent-color);
+            background: none;
+            color: var(--accent-color);
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            min-width: 100px;
+        }
+        .mode-toggle select { background: var(--modal-bg); }
+        .mode-toggle button:hover, .mode-toggle select:focus {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+        }
+        @media (max-width: 600px) { .mode-toggle { top: 0.5rem; right: 0.5rem; } }
 
-    .modal-container {
-        background-color: var(--modal-bg);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        width: 90%;
-        max-width: 900px;
-        height: 90vh;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        display: flex;
-        flex-direction: column;
-        padding: 1rem 2rem;
-        transition: background-color 0.3s, color 0.3s;
-    }
+        #historyPanel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 300px;
+            max-width: 80vw;
+            background-color: var(--modal-bg);
+            border-right: 1px solid var(--border-color);
+            box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            touch-action: pan-y;
+        }
+        #historyPanel.open { transform: translateX(0); }
+        .history-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .history-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .history-actions input[type="file"] {
+            display: none; /* Hide the default file input */
+        }
+        .history-actions button, .history-actions .file-upload-btn {
+            background: none;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+            cursor: pointer;
+            border-radius: 4px;
+            min-width: 60px;
+            display: inline-block;
+            text-align: center;
+        }
+        .history-actions button:hover, .history-actions .file-upload-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+        }
+        .close-history {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        #historyList {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1rem 0;
+            list-style: none;
+            margin: 0;
+        }
+        .history-item {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px dashed var(--border-color);
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        .history-item:hover {
+            background-color: rgba(var(--accent-color-rgb), 0.1);
+        }
+        .history-item-content {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        .history-item-content p {
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-weight: 700;
+        }
+        .history-item-content small {
+            color: var(--secondary-text);
+            font-size: 0.75rem;
+            display: block;
+            margin-top: 2px;
+        }
+        .copy-btn {
+            background: none;
+            border: none;
+            color: var(--secondary-text);
+            cursor: pointer;
+            padding: 0.25rem;
+            font-size: 1rem;
+            line-height: 1;
+        }
+        .copy-btn:hover { color: var(--accent-color); }
 
-    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
-    .modal-title { font-weight: 700; color: var(--accent-color); }
-    .close-modal { background: none; border: none; color: var(--accent-color); font-size: 2rem; cursor: pointer; }
-
-    .result-container {
-        padding: 2rem 0;
-        flex-grow: 1;
-        overflow-y: auto;
-        font-family: 'Crimson Pro', serif;
-        color: var(--text-color);
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-    .result-silvery { background-color: var(--bg-color); border-left: 5px solid var(--accent-color); padding: 1.5rem; line-height: 1.8; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-
-    .citation-block { margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1rem; font-size: 0.9rem; }
-    .citation-block a { color: var(--accent-color); text-decoration: none; }
-    .citation-block a:hover { text-decoration: underline; }
-
-    .modal-footer { display: flex; gap: 1rem; justify-content: flex-end; padding-top: 1rem; border-top: 1px solid var(--border-color); }
-    .modal-footer button { padding: 0.5rem 1rem; border: 1px solid var(--accent-color); background: none; color: var(--accent-color); font-weight: 700; cursor: pointer; }
-    
-    /* --- Mode Toggle Buttons --- */
-    .mode-toggle { position: fixed; top: 1rem; right: 1rem; display: flex; gap: 0.5rem; }
-    .mode-toggle button { padding: 0.5rem 1rem; cursor: pointer; border: 1px solid var(--accent-color); background: none; color: var(--accent-color); font-weight: 700; border-radius: 4px; }
-</style>
+        #customMessage {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-color);
+            color: var(--bg-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            pointer-events: none;
+            z-index: 1001;
+            font-weight: 700;
+            font-size: 0.9rem;
+            max-width: 90vw;
+        }
+        [data-mode="neo"] #customMessage { color: #000000; }
+        #customMessage.visible {
+            opacity: 1;
+            transform: translate(-50%, -10px);
+        }
+        #exportPrompt {
+            display: none;
+            position: fixed;
+            bottom: 4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-color);
+            color: var(--bg-color);
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1001;
+            font-weight: 700;
+            font-size: 0.9rem;
+            max-width: 90vw;
+            text-align: center;
+        }
+        #exportPrompt button {
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--bg-color);
+            background: var(--bg-color);
+            color: var(--accent-color);
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        #exportPrompt button:hover {
+            background: var(--modal-bg);
+        }
+        #exportPrompt.visible {
+            display: block;
+        }
+        .disclaimer {
+            position: fixed;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--secondary-text);
+            font-size: 0.8rem;
+            text-align: center;
+            max-width: 90vw;
+        }
+    </style>
 </head>
 <body data-mode="silvery">
-
-<div class="mode-toggle">
-    <button onclick="setMode('silvery')">Silvery</button>
-    <button onclick="setMode('dark')">Dark</button>
-    <button onclick="setMode('light')">Light</button>
-    <button onclick="setMode('mystic')">Mystic</button>
-</div>
-
-<div class="terminal-window">
-    <p class="typed-text">connected. truth-engine ready.</p>
-    <div class="command-line">
-        <input type="text" class="search-input" id="queryInput" placeholder="Enter query..." autofocus>
+    <div class="mode-toggle">
+        <button data-mode="silvery">Silvery</button>
+        <button data-mode="dark">Dark</button>
+        <button data-mode="neo">Neo</button>
+        <select id="modelSelector" aria-label="Select AI Model">
+            <option value="WORKERS_AI">Workers AI (Free)</option>
+            <option value="dolphin-mistral-24b-venice-edition">Dolphin 24B (Free, 32K)</option>
+            <option value="llama-3-8b">Llama 3 8B (Free)</option>
+            <option value="gemma-7b">Gemma 7B (Free)</option>
+            <option value="mistral-7b">Mistral 7B (Free)</option>
+            <option value="gemini-flash-1.5">Gemini Flash 1.5 (Cheap)</option>
+            <option value="llama-3.2-1b">Llama 3.2 1B (Cheap, 131K)</option>
+            <option value="mistral-nemo">Mistral Nemo (Easter Egg)</option>
+            <option value="qwen2.5-7b-instruct">Qwen 2.5 7B (Easter Egg)</option>
+            <option value="gpt-oss-20b">GPT OSS 20B (Easter Egg)</option>
+        </select>
     </div>
-</div>
 
-<div class="modal-overlay" id="modal-overlay">
-    <div class="modal-container">
-        <div class="modal-header">
-            <p class="modal-title">DATA STREAM // ai-nspired</p>
-            <button class="close-modal" id="close-modal">×</button>
-        </div>
-        <div class="result-container" id="resultContainer"></div>
-        <div class="modal-footer" id="modalFooter">
-            <button id="copyAnalysisBtn">Copy Analysis</button>
-            <button id="ttsBtn">TTS (Read Aloud)</button>
+    <div class="terminal-window">
+        <p class="typed-text" id="typedText">connected. truth-engine ready.</p>
+        <div class="input-row">
+            <div class="command-line">
+                <input type="text" class="search-input" id="queryInput" placeholder="Enter query..." autofocus aria-label="Enter query">
+            </div>
+            <button class="history-toggle" id="historyToggle" aria-label="Toggle history">History</button>
         </div>
     </div>
-</div>
 
-<script>
-const API_URL = 'https://justice.ai-n.workers.dev/api/ai/truth';
-const queryInput = document.getElementById('queryInput');
-const modalOverlay = document.getElementById('modal-overlay');
-const closeModalBtn = document.getElementById('close-modal');
-const resultContainer = document.getElementById('resultContainer');
-const copyAnalysisBtn = document.getElementById('copyAnalysisBtn');
-const ttsBtn = document.getElementById('ttsBtn');
-const body = document.body;
+    <div id="historyPanel">
+        <div class="history-header">
+            <p>History</p>
+            <div class="history-actions">
+                <button id="exportHistory" aria-label="Export history" style="display: inline-block;">Export</button>
+                <button id="importTrigger" class="file-upload-btn" aria-label="Import history" style="display: inline-block;">Import</button>
+                <input type="file" id="importHistory" accept=".json" aria-label="Import history">
+                <button id="clearHistory" aria-label="Clear history" style="display: inline-block;">Clear</button>
+            </div>
+            <button class="close-history" id="closeHistory" aria-label="Close history">×</button>
+        </div>
+        <ul id="historyList" role="list"></ul>
+    </div>
 
-// --- Mode Functions ---
-function setMode(mode){
-    if(mode==='silvery'){ body.setAttribute('data-mode',''); } 
-    else { body.setAttribute('data-mode', mode); }
-}
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <p class="modal-title">DATA STREAM // ai-nspired</p>
+                <button class="close-modal" id="close-modal" aria-label="Close modal">×</button>
+            </div>
+            <div class="result-container" id="resultContainer" role="log" aria-live="polite"></div>
+            <div classs="modal-footer">
+                <button id="newChat" aria-label="New chat">New Chat</button>
+                <button id="copyResult" aria-label="Copy result">Copy Last</button>
+                <button id="ttsBtn" aria-label="Read aloud">Read Last</button>
+            </div>
+        </div>
+    </div>
 
-// --- Modal Functions ---
-function openModal(){ modalOverlay.classList.add('active'); }
-function closeModal(){ modalOverlay.classList.remove('active'); }
+    <div id="customMessage"></div>
+    <div id="exportPrompt">
+        Your shit’s gonna self-destruct in 2 hours—export now to keep your context free!
+        <button id="exportPromptBtn" aria-label="Export conversation">Export Now</button>
+    </div>
+    <div class="disclaimer">
+        Free tier uses shared conversation history. Export to save your context. By using this system, you agree to our terms of service.
+    </div>
 
-// --- Utility Functions ---
-function chooseStyleForQuery(){ return 'silvery'; }
+    <script>
+        // ---!! THIS IS THE FIX !!---
+        // This MUST be the full URL. A relative path '/' will fail when
+        // you open the HTML from your local filesystem (file:///...)
+        const API_URL = 'https://truthengine.ai-n.workers.dev/';
+        
+        const STORAGE_KEY = 'LOCAL_TRUTH_HISTORY';
+        let localHistory = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        let MODEL = localStorage.getItem('truth-model') || 'gemini-flash';
+        let parse = (text) => text.replace(/</g, "&lt;").replace(/>/g, "&gt;"); // Fallback parser
 
-function copyAnalysisToClipboard(){
-    navigator.clipboard.writeText(resultContainer.innerText).then(()=>{
-        copyAnalysisBtn.innerText='COPIED!';
-        setTimeout(()=>copyAnalysisBtn.innerText='Copy Analysis',2000);
-    });
-}
-
-function readAnalysisAloud(){
-    if('speechSynthesis' in window){
-        if(window.speechSynthesis.speaking){ 
-            window.speechSynthesis.cancel(); 
-            ttsBtn.innerText='TTS (Stopped)'; 
-            setTimeout(()=>ttsBtn.innerText='TTS (Read Aloud)',1000); 
-            return; 
+        // --- Utils ---
+        function showMessage(msg, duration = 3000) {
+            const el = document.getElementById('customMessage');
+            if (!el) return;
+            el.textContent = msg;
+            el.classList.add('visible');
+            setTimeout(() => el.classList.remove('visible'), duration);
         }
-        const utterance = new SpeechSynthesisUtterance(resultContainer.innerText.replace(/(\n|\t)/g,' '));
-        utterance.rate=1.1;
-        ttsBtn.innerText='TTS (Speaking...)';
-        utterance.onend=()=>{ttsBtn.innerText='TTS (Read Aloud)';}
-        setTimeout(()=>{window.speechSynthesis.speak(utterance);},100);
-    } else alert('Text-to-Speech not supported.');
-}
 
-// --- Query Function ---
-async function performTruthQuery(query){
-    if(!query) return;
-    openModal();
-    resultContainer.className='result-container';
-    resultContainer.innerHTML='<p>⚡ Scanning truth matrix...</p>';
-    try{
-        const res = await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query})});
-        if(!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        const data = await res.json();
-        const chosenStyle=chooseStyleForQuery();
-        resultContainer.className='result-container result-'+chosenStyle;
-        let html = data.answer ? marked.parse(data.answer) : '<p>No results found.</p>';
-        if(data.citations?.length){
-            html+=`<div class="citation-block"><h3>Sources</h3><ul>${data.citations.map(c=>`<li><a href="${c.url}" target="_blank">${c.title}</a></li>`).join('')}</ul></div>`;
+        function showExportPrompt() {
+            const prompt = document.getElementById('exportPrompt');
+            if (prompt) prompt.classList.add('visible');
+            setTimeout(() => {
+                if (prompt) prompt.classList.remove('visible');
+            }, 5000);
         }
-        resultContainer.innerHTML=html;
-    } catch(err){
-        resultContainer.innerHTML=`<h3>System Error</h3><p>${err.message}</p>`;
-    }
-}
 
-// --- Event Listeners ---
-queryInput.addEventListener('keypress',e=>{if(e.key==='Enter') performTruthQuery(queryInput.value.trim());});
-closeModalBtn.addEventListener('click',closeModal);
-modalOverlay.addEventListener('click',e=>{if(e.target===modalOverlay) closeModal();});
-copyAnalysisBtn.addEventListener('click',copyAnalysisToClipboard);
-ttsBtn.addEventListener('click',readAnalysisAloud);
+        async function loadMarked() {
+            if (window.marked) {
+                parse = window.marked.parse;
+                return;
+            }
+            try {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+                document.head.appendChild(script);
+                script.onload = () => {
+                    if (window.marked) {
+                        parse = window.marked.parse;
+                        console.log('Marked.js loaded.');
+                    }
+                };
+            } catch(e) {
+                console.error('Failed to load Marked.js', e);
+            }
+        }
 
-// Initialize query from URL
-window.addEventListener('load',()=>{
-    const params = new URLSearchParams(window.location.search);
-    const q = params.get('q');
-    if(q){ queryInput.value = decodeURIComponent(q.replace(/\+/g,' ')); performTruthQuery(queryInput.value); }
-});
-</script>
+        function copyToClipboard(text, msg = 'Copied!') {
+            if (!navigator.clipboard) {
+                showMessage('Clipboard API not available.');
+                return;
+            }
+            navigator.clipboard.writeText(text).then(() => showMessage(msg)).catch(err => showMessage('Failed to copy.'));
+        }
+
+        async function promptForPassphrase(challengeQuestion) {
+            return new Promise((resolve) => {
+                const passphrase = prompt(challengeQuestion || 'What is the passphrase?');
+                resolve(passphrase || '');
+            });
+        }
+        
+        function sanitizeQuery(query) {
+             // Basic sanitization to prevent weirdness, but allow Marked to render
+            return query.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+        
+        function scrollToBottom() {
+            const container = document.getElementById('resultContainer');
+            if(container) container.scrollTop = container.scrollHeight;
+        }
+
+        // --- Modal/History ---
+        function openModal() {
+            document.getElementById('modal-overlay').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-overlay').classList.remove('active');
+            if (speechSynthesis.speaking) speechSynthesis.cancel();
+            if (localHistory.length > 0) showExportPrompt();
+        }
+
+        function toggleHistory() {
+            const panel = document.getElementById('historyPanel');
+            if (!panel) return;
+            panel.classList.toggle('open');
+            if (panel.classList.contains('open')) fetchHistory();
+        }
+
+        async function fetchHistory() {
+            try {
+                const res = await fetch(`${API_URL}conversation/history`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const history = await res.json();
+                
+                if (!Array.isArray(history)) {
+                    console.error("Fetched history is not an array:", history);
+                    localHistory = [];
+                } else {
+                    localHistory = history;
+                }
+                
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(localHistory));
+                renderHistory();
+            } catch (error) {
+                showMessage(`Failed to fetch history: ${error.message}`);
+                console.error("fetchHistory error:", error);
+                renderHistory(); // Fallback to local storage
+            }
+        }
+
+        function renderHistory() {
+            const list = document.getElementById('historyList');
+            if (!list) return;
+            
+            if (!Array.isArray(localHistory)) {
+                console.error("localHistory is not an array:", localHistory);
+                localHistory = []; // Fix it
+            }
+            
+            list.innerHTML = localHistory.slice(-20).reverse().map(item => {
+                const query = item.query || "Empty Query";
+                const safeQuery = query.replace(/"/g, '&quot;');
+                const shortQuery = query.slice(0, 50) + (query.length > 50 ? '...' : '');
+                
+                return `
+                <li class="history-item" role="button" tabindex="0" data-query="${safeQuery}">
+                    <div class="history-item-content">
+                        <p>${shortQuery}</p>
+                        <small>${item.model || 'unknown'} • ${item.timestamp ? new Date(item.timestamp).toLocaleString() : 'no date'}</small>
+                    </div>
+                    <button class="copy-btn" aria-label="Copy query and answer">📋</button>
+                </li>
+            `}).join('');
+            
+            document.querySelectorAll('.history-item').forEach(item => {
+                item.addEventListener('click', e => {
+                    const query = item.dataset.query;
+                    if (e.target.classList.contains('copy-btn')) {
+                        const historyItem = localHistory.find(h => h.query === query);
+                        copyToClipboard(`Query: ${query}\nAnswer: ${historyItem ? historyItem.answer : 'Not found.'}`);
+                    } else {
+                        performTruthQuery(query);
+                    }
+                });
+                item.addEventListener('keydown', e => {
+                    if (e.key === 'Enter') performTruthQuery(item.dataset.query);
+                });
+            });
+        }
+
+        async function exportHistory() {
+            try {
+                const res = await fetch(`${API_URL}conversation/export`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const blob = await res.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'conversation.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showMessage('History exported. Save it to continue later!');
+            } catch (error) {
+                showMessage('Failed to export history.');
+            }
+        }
+
+        async function importHistory(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async () => {
+                try {
+                    const imported = JSON.parse(reader.result);
+                    if (!imported || !Array.isArray(imported.history)) {
+                        throw new Error("Invalid file format. Expected { history: [...] }");
+                    }
+                    const res = await fetch(`${API_URL}conversation/import`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(imported)
+                    });
+                    if (!res.ok) {
+                         const err = await res.json();
+                         throw new Error(err.error || `HTTP ${res.status}`);
+                    }
+                    const data = await res.json();
+                    if (data.success) {
+                        localHistory = imported.history;
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(localHistory));
+                        await fetchHistory();
+                        showMessage('History imported. Context restored!');
+                    } else {
+                        throw new Error(data.error);
+                    }
+                } catch (error) {
+                    showMessage(`Import failed: ${error.message}`);
+                }
+            };
+            reader.readAsText(file);
+        }
+        
+        async function clearHistory() {
+            try {
+                const res = await fetch(`${API_URL}conversation/import`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ history: [] })
+                });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                localHistory = [];
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(localHistory));
+                renderHistory();
+                showMessage('History cleared.');
+                
+                // Also clear the modal
+                const container = document.getElementById('resultContainer');
+                if (container) container.innerHTML = "";
+                
+            } catch (error) {
+                showMessage('Failed to clear history.');
+            }
+        }
+
+        // --- Query ---
+        async function performTruthQuery(query, challengeResponse = '') {
+            if (!query || !query.trim()) return showMessage('Enter a query.');
+            
+            const sanitizedQuery = sanitizeQuery(query);
+            openModal();
+            const container = document.getElementById('resultContainer');
+            if (!container) return;
+            
+            // Add query to chat
+            const queryBlock = document.createElement('div');
+            queryBlock.className = 'conversation-block';
+            queryBlock.innerHTML = `<h4>Query: ${sanitizedQuery}</h4>`;
+            container.appendChild(queryBlock);
+            
+            // Add placeholder for answer
+            const loadingId = `loading-${Date.now()}`;
+            const answerBlock = document.createElement('div');
+            answerBlock.className = 'content';
+            answerBlock.id = loadingId;
+            answerBlock.innerHTML = 'Scanning...';
+            queryBlock.appendChild(answerBlock);
+
+            scrollToBottom();
+
+            try {
+                const payload = {
+                    input: query,
+                    model: MODEL,
+                    challengeResponse: challengeResponse
+                };
+                const res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                
+                const answerContainer = document.getElementById(loadingId);
+                if (!answerContainer) return;
+
+                if (!res.ok) {
+                    if (data.error === 'CHALLENGE_REQUIRED') {
+                        // Remove the placeholder blocks
+                        queryBlock.remove(); 
+                        const passphrase = await promptForPassphrase(data.challengeQuestion);
+                        return performTruthQuery(query, passphrase); // Re-run query
+                    }
+                    throw new Error(data.error || `HTTP ${res.status}`);
+                }
+                
+                // Success
+                answerContainer.innerHTML = parse(data.answer);
+                
+                const meta = document.createElement('small');
+                meta.textContent = `Model: ${data.model} • ${new Date(data.timestamp).toLocaleString()}`;
+                if(data.cached) {
+                    meta.textContent += " (Cached)";
+                    meta.style.color = "var(--accent-color)";
+                    meta.style.fontWeight = "bold";
+                }
+                queryBlock.appendChild(meta);
+
+
+                localHistory.push({ query, answer: data.answer, model: data.model, timestamp: data.timestamp });
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(localHistory));
+                // No need to fetchHistory(), just render
+                renderHistory(); 
+
+            } catch (error) {
+                const answerContainer = document.getElementById(loadingId);
+                if (answerContainer) {
+                    answerContainer.innerHTML = `Error: ${error.message}`;
+                } else {
+                    queryBlock.innerHTML += `<div class="content">Error: ${error.message}</div>`;
+                }
+            }
+            
+            scrollToBottom();
+        }
+
+        // --- Event Listeners ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMarked(); // Load markdown parser
+        
+            document.getElementById('queryInput').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    performTruthQuery(e.target.value);
+                    e.target.value = ""; // Clear input after send
+                }
+            });
+            
+            document.getElementById('historyToggle').addEventListener('click', toggleHistory);
+            document.getElementById('closeHistory').addEventListener('click', toggleHistory);
+            document.getElementById('close-modal').addEventListener('click', closeModal);
+            
+            document.getElementById('copyResult').addEventListener('click', () => {
+                const lastContent = document.querySelector('.conversation-block:last-child .content');
+                if (lastContent) {
+                    copyToClipboard(lastContent.textContent);
+                } else {
+                    showMessage('No result to copy.');
+                }
+            });
+            
+            document.getElementById('ttsBtn').addEventListener('click', () => {
+                if (speechSynthesis.speaking) {
+                    speechSynthesis.cancel();
+                    return;
+                }
+                const lastContent = document.querySelector('.conversation-block:last-child .content');
+                if (lastContent && lastContent.textContent) {
+                    const utterance = new SpeechSynthesisUtterance(lastContent.textContent);
+                    speechSynthesis.speak(utterance);
+                } else {
+                    showMessage('No result to read.');
+                }
+            });
+            
+            document.getElementById('newChat').addEventListener('click', () => {
+                clearHistory(); // This clears the DO and the modal
+                showMessage('New chat started.');
+            });
+            
+            document.getElementById('exportHistory').addEventListener('click', exportHistory);
+            document.getElementById('importTrigger').addEventListener('click', () => {
+                document.getElementById('importHistory').click(); // Trigger hidden file input
+            });
+            document.getElementById('importHistory').addEventListener('change', importHistory);
+            document.getElementById('clearHistory').addEventListener('click', clearHistory);
+            
+            document.getElementById('modelSelector').addEventListener('change', (e) => {
+                MODEL = e.target.value;
+                localStorage.setItem('truth-model', MODEL);
+                showMessage(`Model set to ${e.target.options[e.target.selectedIndex].text}`);
+            });
+            
+            document.querySelectorAll('.mode-toggle button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.body.dataset.mode = btn.dataset.mode;
+                    localStorage.setItem('theme', btn.dataset.mode);
+                });
+            });
+            
+            document.getElementById('exportPromptBtn').addEventListener('click', exportHistory);
+
+            // --- Initialize ---
+            document.body.dataset.mode = localStorage.getItem('theme') || 'silvery';
+            document.getElementById('modelSelector').value = MODEL;
+            
+            // Fetch history *after* DOM is loaded
+            fetchHistory(); 
+            
+            setTimeout(() => {
+                const typedText = document.getElementById('typedText');
+                if (typedText) {
+                    typedText.classList.add('is-typing');
+                    setTimeout(() => {
+                        typedText.classList.remove('is-typing');
+                        typedText.classList.add('is-done');
+                    }, 3500);
+                }
+            }, 100);
+        });
+    </script>
 </body>
 </html>
+
+
