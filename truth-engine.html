@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI-Nspired :: Truth Engine Interface</title>
-    <meta name="description" content="ai-nspired.com • truth-engine. memory keeper. Systems that don’t forget—or flinch.">
+    <meta name="description" content="ai-nspired.com • truth-engine. memory keeper. Systems that don't forget—or flinch.">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;700&display=swap');
 
@@ -70,12 +70,25 @@
             width: 100%;
             position: relative;
         }
-        @media (max-width: 600px) { body { padding: 1rem 0.5rem; } }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+                align-items: flex-start;
+                min-height: 90vh;
+            }
+        }
 
         .terminal-window {
             width: 100%;
             max-width: 800px;
             text-align: left;
+        }
+
+        @media (max-width: 768px) {
+            .terminal-window {
+                margin-top: 2rem;
+            }
         }
 
         .typed-text {
@@ -88,6 +101,15 @@
             border-right: 3px solid var(--accent-color);
             animation: blink-caret .75s step-end infinite;
         }
+
+        @media (max-width: 768px) {
+            .typed-text {
+                font-size: 1.3rem;
+                text-align: center;
+                display: block;
+            }
+        }
+
         .typed-text.is-typing {
             animation: typing 3.5s steps(40, end) forwards, blink-caret .75s step-end infinite;
         }
@@ -100,49 +122,174 @@
         @keyframes typing { from { width: 0 } to { width: 100% } }
         @keyframes blink-caret { 50% { border-color: transparent; } }
 
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 2rem;
+            width: 100%;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .input-container {
+                margin-top: 3rem;
+            }
+        }
+
         .input-row {
             display: flex;
-            align-items: center;
-            margin-top: 1rem;
+            align-items: flex-end;
+            gap: 0.5rem;
             width: 100%;
         }
+
+        @media (max-width: 768px) {
+            .input-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
         .command-line {
             display: flex;
-            align-items: center;
+            align-items: flex-end;
             flex-grow: 1;
+            min-width: 0;
+            width: 100%;
+            position: relative;
+            background: var(--content-bg);
+            border: 2px solid var(--accent-color);
+            border-radius: 16px;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
         }
-        .command-line::before { content: '>'; margin-right: 1rem; font-weight: bold; }
+
+        .command-line:focus-within {
+            box-shadow: 0 0 20px rgba(var(--accent-color-rgb), 0.3);
+            border-color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .command-line {
+                order: 2;
+                border-radius: 20px;
+            }
+        }
+
+        .enter-button {
+            margin: 0.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            align-self: flex-end;
+        }
+
+        .enter-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .enter-button {
+                width: 50px;
+                height: 50px;
+                font-size: 1.8rem;
+                position: absolute;
+                right: 8px;
+                bottom: 8px;
+                z-index: 2;
+            }
+        }
 
         .search-input {
             background: transparent;
             border: none;
             color: var(--text-color);
             font-family: 'Crimson Pro', serif;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             flex-grow: 1;
             outline: none;
-            padding-right: 1rem;
+            min-width: 0;
+            width: 100%;
+            padding: 1rem;
+            resize: none;
+            min-height: 60px;
+            max-height: 200px;
+            line-height: 1.5;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
+
+        @media (max-width: 768px) {
+            .search-input {
+                font-size: 1.2rem;
+                padding: 1.2rem;
+                min-height: 80px;
+                padding-right: 70px;
+            }
+        }
+
         .search-input:focus {
-            outline: 2px solid var(--accent-color);
-            outline-offset: 4px;
-            border-radius: 2px;
+            outline: none;
         }
-        .history-toggle {
-            padding: 0.5rem 1rem;
-            margin-left: 1rem;
-            border: 1px solid var(--accent-color);
+
+        .button-row {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .button-row {
+                order: 1;
+                justify-content: space-between;
+            }
+        }
+
+        .icon-button {
+            padding: 0.75rem;
+            border: 2px solid var(--accent-color);
             background: none;
             color: var(--accent-color);
             font-weight: 700;
             cursor: pointer;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            min-width: 80px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            text-decoration: none;
         }
-        .history-toggle:hover, .history-toggle:focus {
+
+        @media (max-width: 768px) {
+            .icon-button {
+                width: 55px;
+                height: 55px;
+                font-size: 1.3rem;
+            }
+        }
+
+        .icon-button:hover, .icon-button:focus {
             background-color: var(--accent-color);
             color: var(--bg-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(var(--accent-color-rgb), 0.3);
         }
 
         .modal-overlay {
@@ -171,10 +318,27 @@
             transition: background-color 0.3s, color 0.3s;
             overflow: hidden;
         }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
         .modal-title { font-weight: 700; color: var(--accent-color); }
-        .close-modal { background: none; border: none; color: var(--accent-color); font-size: 2rem; cursor: pointer; }
-        .close-modal:hover { color: var(--bg-color); background: var(--accent-color); border-radius: 50%; }
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--accent-color);
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+        .close-modal:hover {
+            color: var(--bg-color);
+            background: var(--accent-color);
+            border-radius: 50%;
+        }
         .result-container {
             padding: 1rem 0;
             flex-grow: 1;
@@ -184,25 +348,12 @@
             transition: background-color 0.3s, color 0.3s;
             scroll-behavior: smooth;
         }
-        .conversation-block {
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px dashed var(--border-color);
-        }
-        .conversation-block:last-child {
-            border-bottom: none;
-        }
-        .conversation-block h4 {
-            margin: 0 0 0.5rem 0;
-            color: var(--accent-color);
-        }
         .conversation-block .content {
             box-shadow: 0 4px 10px var(--shadow-color);
             margin-top: 1rem;
             padding: 1rem;
             border-radius: 4px;
             transition: box-shadow 0.3s;
-            background-color: var(--content-bg);
         }
         [data-mode="neo"] .conversation-block .content {
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
@@ -230,39 +381,14 @@
             color: var(--bg-color);
         }
 
-        .mode-toggle {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-        .mode-toggle button, .mode-toggle select {
-            padding: 0.5rem;
-            border: 1px solid var(--accent-color);
-            background: none;
-            color: var(--accent-color);
-            font-weight: 700;
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            min-width: 100px;
-        }
-        .mode-toggle select { background: var(--modal-bg); }
-        .mode-toggle button:hover, .mode-toggle select:focus {
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-        }
-        @media (max-width: 600px) { .mode-toggle { top: 0.5rem; right: 0.5rem; } }
-
+        /* Menu Panel Styles */
         #historyPanel {
             position: fixed;
             top: 0;
             left: 0;
             height: 100%;
-            width: 300px;
-            max-width: 80vw;
+            width: 350px;
+            max-width: 85vw;
             background-color: var(--modal-bg);
             border-right: 1px solid var(--border-color);
             box-shadow: 5px 0 15px rgba(0,0,0,0.5);
@@ -272,55 +398,134 @@
             display: flex;
             flex-direction: column;
             touch-action: pan-y;
+            overflow-y: auto;
         }
         #historyPanel.open { transform: translateX(0); }
         .history-header {
-            padding: 1rem;
+            padding: 1.5rem;
             border-bottom: 1px solid var(--border-color);
             display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--accent-color);
+            color: var(--bg-color);
         }
-        .history-actions {
+        .history-title { 
+            font-weight: 700; 
+            font-size: 1.2rem;
+            margin: 0;
+        }
+        
+        .menu-section {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .menu-section:last-child {
+            border-bottom: none;
+        }
+        .menu-section-title {
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .theme-buttons {
             display: flex;
             gap: 0.5rem;
             flex-wrap: wrap;
         }
-        .history-actions input[type="file"] {
-            display: none; /* Hide the default file input */
-        }
-        .history-actions button, .history-actions .file-upload-btn {
+        .theme-buttons button {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--accent-color);
             background: none;
-            border: 1px solid var(--accent-color);
             color: var(--accent-color);
-            font-size: 0.8rem;
-            padding: 0.25rem 0.5rem;
+            font-weight: 700;
             cursor: pointer;
-            border-radius: 4px;
-            min-width: 60px;
-            display: inline-block;
-            text-align: center;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            flex: 1;
+            min-width: 80px;
+            transition: all 0.3s ease;
         }
-        .history-actions button:hover, .history-actions .file-upload-btn:hover {
+        .theme-buttons button:hover, .theme-buttons button:focus {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            transform: translateY(-2px);
+        }
+        
+        .model-selector {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--accent-color);
+            background: var(--modal-bg);
+            color: var(--accent-color);
+            font-weight: 700;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .model-selector:focus {
+            outline: none;
             background-color: var(--accent-color);
             color: var(--bg-color);
         }
+
+        .history-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+        .history-actions button, .history-actions input {
+            background: none;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            padding: 0.75rem;
+            cursor: pointer;
+            border-radius: 8px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        .history-actions button:hover, .history-actions input:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-color);
+            transform: translateY(-2px);
+        }
+
+        #importHistory {
+            display: none;
+        }
+
         .close-history {
             background: none;
             border: none;
-            color: var(--accent-color);
-            font-size: 1.5rem;
+            color: var(--bg-color);
+            font-size: 1.8rem;
             cursor: pointer;
+            padding: 0.25rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
+        .close-history:hover {
+            background: var(--bg-color);
+            color: var(--accent-color);
+        }
+
         #historyList {
             flex-grow: 1;
             overflow-y: auto;
-            padding: 1rem 0;
+            padding: 0 1.5rem;
             list-style: none;
             margin: 0;
         }
         .history-item {
-            padding: 0.75rem 1rem;
+            padding: 1rem 0;
             border-bottom: 1px dashed var(--border-color);
             font-size: 0.9rem;
             transition: background-color 0.2s;
@@ -429,87 +634,234 @@
     </style>
 </head>
 <body data-mode="silvery">
-    <div class="mode-toggle">
-        <button data-mode="silvery">Silvery</button>
-        <button data-mode="dark">Dark</button>
-        <button data-mode="neo">Neo</button>
-        <select id="modelSelector" aria-label="Select AI Model">
-            <option value="WORKERS_AI">Workers AI (Free)</option>
-            <option value="dolphin-mistral-24b-venice-edition">Dolphin 24B (Free, 32K)</option>
-            <option value="llama-3-8b">Llama 3 8B (Free)</option>
-            <option value="gemma-7b">Gemma 7B (Free)</option>
-            <option value="mistral-7b">Mistral 7B (Free)</option>
-            <option value="gemini-flash-1.5">Gemini Flash 1.5 (Cheap)</option>
-            <option value="llama-3.2-1b">Llama 3.2 1B (Cheap, 131K)</option>
-            <option value="mistral-nemo">Mistral Nemo (Easter Egg)</option>
-            <option value="qwen2.5-7b-instruct">Qwen 2.5 7B (Easter Egg)</option>
-            <option value="gpt-oss-20b">GPT OSS 20B (Easter Egg)</option>
-        </select>
-    </div>
-
     <div class="terminal-window">
         <p class="typed-text" id="typedText">connected. truth-engine ready.</p>
-        <div class="input-row">
-            <div class="command-line">
-                <input type="text" class="search-input" id="queryInput" placeholder="Enter query..." autofocus aria-label="Enter query">
+        
+        <div class="input-container">
+            <div class="button-row">
+                <button class="icon-button" id="historyToggle" title="Menu">☰</button>
+                <button class="icon-button" id="newChatBtn" title="New Chat">+</button>
             </div>
-            <button class="history-toggle" id="historyToggle" aria-label="Toggle history">History</button>
+            
+            <div class="input-row">
+                <div class="command-line">
+                    <textarea class="search-input" id="queryInput" placeholder="Ask anything..." rows="3"></textarea>
+                    <button class="enter-button" id="enterButton">⏎</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <div id="historyPanel">
         <div class="history-header">
-            <p>History</p>
-            <div class="history-actions">
-                <button id="exportHistory" aria-label="Export history" style="display: inline-block;">Export</button>
-                <button id="importTrigger" class="file-upload-btn" aria-label="Import history" style="display: inline-block;">Import</button>
-                <input type="file" id="importHistory" accept=".json" aria-label="Import history">
-                <button id="clearHistory" aria-label="Clear history" style="display: inline-block;">Clear</button>
-            </div>
-            <button class="close-history" id="closeHistory" aria-label="Close history">×</button>
+            <p class="history-title">Menu & History</p>
+            <button class="close-history" id="closeHistory">×</button>
         </div>
-        <ul id="historyList" role="list"></ul>
+        
+        <!-- Theme Selection Section -->
+        <div class="menu-section">
+            <div class="menu-section-title">Theme</div>
+            <div class="theme-buttons">
+                <button data-mode="silvery">Silvery</button>
+                <button data-mode="dark">Dark</button>
+                <button data-mode="neo">Neo</button>
+            </div>
+        </div>
+        
+        <!-- Model Selection Section -->
+        <div class="menu-section">
+            <div class="menu-section-title">AI Model</div>
+            <select class="model-selector" id="modelSelector" aria-label="Select AI Model">
+                <option value="WORKERS_AI">Workers AI (Free)</option>
+                <option value="dolphin-mistral-24b-venice-edition">Dolphin 24B (Free, 32K)</option>
+                <option value="llama-3-8b">Llama 3 8B (Free)</option>
+                <option value="llama-3.2-1b">Llama 3.2 1B (Cheap, 131K)</option>
+                <option value="mistral-nemo">Mistral Nemo (Easter Egg)</option>
+                <option value="qwen2.5-7b-instruct">Qwen 2.5 7B (Easter Egg)</option>
+                <option value="gpt-oss-20b">GPT OSS 20B (Easter Egg)</option>
+            </select>
+        </div>
+        
+        <!-- History Actions Section -->
+        <div class="menu-section">
+            <div class="menu-section-title">Data Management</div>
+            <div class="history-actions">
+                <button id="exportHistory">Export All</button>
+                <button id="importTrigger">Import</button>
+                <input type="file" id="importHistory" accept=".json">
+                <button id="clearLocalHistory">Clear Local</button>
+            </div>
+        </div>
+        
+        <!-- Conversation History Section -->
+        <div class="menu-section" style="border-bottom: none; flex-grow: 1; display: flex; flex-direction: column;">
+            <div class="menu-section-title">Recent Conversations</div>
+            <ul id="historyList"></ul>
+        </div>
     </div>
 
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal-container">
             <div class="modal-header">
                 <p class="modal-title">DATA STREAM // ai-nspired</p>
-                <button class="close-modal" id="close-modal" aria-label="Close modal">×</button>
+                <button class="close-modal" id="close-modal">×</button>
             </div>
-            <div class="result-container" id="resultContainer" role="log" aria-live="polite"></div>
-            <div classs="modal-footer">
-                <button id="newChat" aria-label="New chat">New Chat</button>
-                <button id="copyResult" aria-label="Copy result">Copy Last</button>
-                <button id="ttsBtn" aria-label="Read aloud">Read Last</button>
+            <div class="result-container" id="resultContainer"></div>
+            <div class="modal-footer">
+                <button id="copyResult">Copy</button>
+                <button id="ttsBtn">TTS</button>
+                <button id="saveLocal">Save Locally</button>
             </div>
         </div>
     </div>
 
     <div id="customMessage"></div>
     <div id="exportPrompt">
-        Your shit’s gonna self-destruct in 2 hours—export now to keep your context free!
-        <button id="exportPromptBtn" aria-label="Export conversation">Export Now</button>
+        Your conversation context will reset in 2 hours—export to preserve your history!
+        <button id="exportPromptBtn">Export Now</button>
     </div>
     <div class="disclaimer">
-        Free tier uses shared conversation history. Export to save your context. By using this system, you agree to our terms of service.
+        Primary storage: Local browser. Export to backup. "New Chat" clears remote context only.
     </div>
 
     <script>
-        // ---!! THIS IS THE FIX !!---
-        // This MUST be the full URL. A relative path '/' will fail when
-        // you open the HTML from your local filesystem (file:///...)
-        const API_URL = 'https://truthengine.ai-n.workers.dev/';
+        const API_URL = 'https://truthengine.ai-n.workers.dev';
         
-        const STORAGE_KEY = 'LOCAL_TRUTH_HISTORY';
-        let localHistory = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-        let MODEL = localStorage.getItem('truth-model') || 'gemini-flash';
-        let parse = (text) => text.replace(/</g, "&lt;").replace(/>/g, "&gt;"); // Fallback parser
+        // Storage Keys - LOCAL is primary
+        const LOCAL_HISTORY_KEY = 'TRUTH_ENGINE_LOCAL_HISTORY';
+        const REMOTE_HISTORY_KEY = 'TRUTH_ENGINE_REMOTE_SYNC';
+        const CURRENT_SESSION_KEY = 'TRUTH_ENGINE_CURRENT_SESSION';
+        
+        // State management
+        let localHistory = JSON.parse(localStorage.getItem(LOCAL_HISTORY_KEY)) || [];
+        let remoteHistory = JSON.parse(localStorage.getItem(REMOTE_HISTORY_KEY)) || [];
+        let currentSession = JSON.parse(localStorage.getItem(CURRENT_SESSION_KEY)) || [];
+        let MODEL = localStorage.getItem('truth-model') || 'WORKERS_AI';
+        let isChallenging = false;
 
-        // --- Utils ---
+        // ==================== LOCAL STORAGE MANAGEMENT ====================
+        
+        function saveToLocalHistory(query, answer, model) {
+            const entry = {
+                id: Date.now().toString(),
+                query: query,
+                answer: answer,
+                model: model,
+                timestamp: Math.floor(Date.now() / 1000),
+                source: 'local'
+            };
+            
+            localHistory.unshift(entry);
+            // Keep only last 100 local entries to prevent storage bloat
+            if (localHistory.length > 100) {
+                localHistory = localHistory.slice(0, 100);
+            }
+            
+            localStorage.setItem(LOCAL_HISTORY_KEY, JSON.stringify(localHistory));
+            return entry;
+        }
+
+        function getLocalHistory() {
+            return localHistory;
+        }
+
+        function clearLocalHistory() {
+            localHistory = [];
+            localStorage.setItem(LOCAL_HISTORY_KEY, '[]');
+            return true;
+        }
+
+        function exportLocalHistory() {
+            const exportData = {
+                version: "2.0",
+                exportedAt: new Date().toISOString(),
+                source: "truth-engine-local",
+                conversations: localHistory
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `truth-engine-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            return exportData;
+        }
+
+        function importLocalHistory(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const importedData = JSON.parse(e.target.result);
+                        
+                        // Validate import format
+                        if (!importedData.conversations || !Array.isArray(importedData.conversations)) {
+                            throw new Error('Invalid file format: missing conversations array');
+                        }
+                        
+                        // Merge imported conversations with existing local history
+                        const newEntries = importedData.conversations.filter(conv => 
+                            conv.query && conv.answer && !localHistory.some(existing => 
+                                existing.query === conv.query && existing.answer === conv.answer
+                            )
+                        );
+                        
+                        localHistory = [...newEntries, ...localHistory];
+                        localStorage.setItem(LOCAL_HISTORY_KEY, JSON.stringify(localHistory));
+                        
+                        resolve({
+                            success: true,
+                            imported: newEntries.length,
+                            total: localHistory.length
+                        });
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                reader.onerror = () => reject(new Error('Failed to read file'));
+                reader.readAsText(file);
+            });
+        }
+
+        // ==================== SESSION MANAGEMENT ====================
+        
+        function addToCurrentSession(query, answer, model) {
+            const sessionEntry = {
+                query: query,
+                answer: answer,
+                model: model,
+                timestamp: Math.floor(Date.now() / 1000)
+            };
+            
+            currentSession.unshift(sessionEntry);
+            localStorage.setItem(CURRENT_SESSION_KEY, JSON.stringify(currentSession));
+            return sessionEntry;
+        }
+
+        function clearCurrentSession() {
+            currentSession = [];
+            localStorage.setItem(CURRENT_SESSION_KEY, '[]');
+            return true;
+        }
+
+        function getSessionContext() {
+            // Return last 5 interactions for context
+            return currentSession.slice(0, 5).reverse().map(entry => 
+                `User: ${entry.query}\nAI: ${entry.answer}`
+            ).join('\n\n');
+        }
+
+        // ==================== UI FUNCTIONS ====================
+
         function showMessage(msg, duration = 3000) {
             const el = document.getElementById('customMessage');
-            if (!el) return;
             el.textContent = msg;
             el.classList.add('visible');
             setTimeout(() => el.classList.remove('visible'), duration);
@@ -517,385 +869,309 @@
 
         function showExportPrompt() {
             const prompt = document.getElementById('exportPrompt');
-            if (prompt) prompt.classList.add('visible');
-            setTimeout(() => {
-                if (prompt) prompt.classList.remove('visible');
-            }, 5000);
+            prompt.classList.add('visible');
+            setTimeout(() => prompt.classList.remove('visible'), 5000);
         }
 
         async function loadMarked() {
-            if (window.marked) {
-                parse = window.marked.parse;
-                return;
-            }
-            try {
-                const script = document.createElement('script');
-                script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
-                document.head.appendChild(script);
-                script.onload = () => {
-                    if (window.marked) {
-                        parse = window.marked.parse;
-                        console.log('Marked.js loaded.');
-                    }
+            if (window.marked) return window.marked.parse;
+            
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+            document.head.appendChild(script);
+            return new Promise((resolve, reject) => {
+                script.onload = () => resolve(window.marked.parse);
+                script.onerror = () => {
+                    console.warn('Marked failed to load, using plain text');
+                    resolve(text => text);
                 };
-            } catch(e) {
-                console.error('Failed to load Marked.js', e);
-            }
+            });
         }
 
         function copyToClipboard(text, msg = 'Copied!') {
-            if (!navigator.clipboard) {
-                showMessage('Clipboard API not available.');
-                return;
-            }
-            navigator.clipboard.writeText(text).then(() => showMessage(msg)).catch(err => showMessage('Failed to copy.'));
+            navigator.clipboard.writeText(text).then(() => showMessage(msg));
         }
 
         async function promptForPassphrase(challengeQuestion) {
-            return new Promise((resolve) => {
-                const passphrase = prompt(challengeQuestion || 'What is the passphrase?');
-                resolve(passphrase || '');
-            });
-        }
-        
-        function sanitizeQuery(query) {
-             // Basic sanitization to prevent weirdness, but allow Marked to render
-            return query.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-        
-        function scrollToBottom() {
-            const container = document.getElementById('resultContainer');
-            if(container) container.scrollTop = container.scrollHeight;
+            return prompt(challengeQuestion || 'What is the passphrase?') || '';
         }
 
-        // --- Modal/History ---
         function openModal() {
             document.getElementById('modal-overlay').classList.add('active');
         }
 
         function closeModal() {
             document.getElementById('modal-overlay').classList.remove('active');
-            if (speechSynthesis.speaking) speechSynthesis.cancel();
-            if (localHistory.length > 0) showExportPrompt();
+            speechSynthesis.cancel();
+            if (currentSession.length > 0) showExportPrompt();
         }
 
         function toggleHistory() {
             const panel = document.getElementById('historyPanel');
-            if (!panel) return;
             panel.classList.toggle('open');
-            if (panel.classList.contains('open')) fetchHistory();
+            if (panel.classList.contains('open')) renderCombinedHistory();
         }
 
-        async function fetchHistory() {
-            try {
-                const res = await fetch(`${API_URL}conversation/history`, {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                const history = await res.json();
-                
-                if (!Array.isArray(history)) {
-                    console.error("Fetched history is not an array:", history);
-                    localHistory = [];
-                } else {
-                    localHistory = history;
-                }
-                
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(localHistory));
-                renderHistory();
-            } catch (error) {
-                showMessage(`Failed to fetch history: ${error.message}`);
-                console.error("fetchHistory error:", error);
-                renderHistory(); // Fallback to local storage
-            }
-        }
-
-        function renderHistory() {
+        function renderCombinedHistory() {
             const list = document.getElementById('historyList');
-            if (!list) return;
+            const allHistory = [...currentSession, ...localHistory.slice(0, 50)];
             
-            if (!Array.isArray(localHistory)) {
-                console.error("localHistory is not an array:", localHistory);
-                localHistory = []; // Fix it
-            }
-            
-            list.innerHTML = localHistory.slice(-20).reverse().map(item => {
-                const query = item.query || "Empty Query";
-                const safeQuery = query.replace(/"/g, '&quot;');
-                const shortQuery = query.slice(0, 50) + (query.length > 50 ? '...' : '');
+            list.innerHTML = allHistory.map(item => {
+                const query = (item.query || '').trim();
+                const display = query.slice(0, 60) + (query.length > 60 ? '...' : '');
+                const isCurrent = currentSession.includes(item);
                 
                 return `
-                <li class="history-item" role="button" tabindex="0" data-query="${safeQuery}">
+                <li class="history-item" data-query="${query.replace(/"/g, '&quot;')}" data-answer="${(item.answer || '').replace(/"/g, '&quot;')}">
                     <div class="history-item-content">
-                        <p>${shortQuery}</p>
-                        <small>${item.model || 'unknown'} • ${item.timestamp ? new Date(item.timestamp).toLocaleString() : 'no date'}</small>
+                        <p>${display || 'Empty'}</p>
+                        <small>${item.model || 'unknown'} • ${new Date(item.timestamp * 1000).toLocaleString()}</small>
+                        ${isCurrent ? '<br><small><em>(Current Session)</em></small>' : ''}
                     </div>
-                    <button class="copy-btn" aria-label="Copy query and answer">📋</button>
-                </li>
-            `}).join('');
-            
+                    <button class="copy-btn" title="Copy conversation">Copy</button>
+                </li>`;
+            }).join('');
+
+            // Add event listeners
             document.querySelectorAll('.history-item').forEach(item => {
+                const query = item.dataset.query;
+                const answer = item.dataset.answer;
+                
                 item.addEventListener('click', e => {
-                    const query = item.dataset.query;
                     if (e.target.classList.contains('copy-btn')) {
-                        const historyItem = localHistory.find(h => h.query === query);
-                        copyToClipboard(`Query: ${query}\nAnswer: ${historyItem ? historyItem.answer : 'Not found.'}`);
-                    } else {
-                        performTruthQuery(query);
+                        copyToClipboard(`Q: ${query}\nA: ${answer || ''}`);
+                    } else if (query) {
+                        document.getElementById('queryInput').value = query;
+                        document.getElementById('queryInput').focus();
+                        toggleHistory();
                     }
-                });
-                item.addEventListener('keydown', e => {
-                    if (e.key === 'Enter') performTruthQuery(item.dataset.query);
                 });
             });
         }
 
-        async function exportHistory() {
-            try {
-                const res = await fetch(`${API_URL}conversation/export`, {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                const blob = await res.blob();
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'conversation.json';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                showMessage('History exported. Save it to continue later!');
-            } catch (error) {
-                showMessage('Failed to export history.');
-            }
-        }
+        // ==================== CORE LOGIC ====================
 
-        async function importHistory(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = async () => {
-                try {
-                    const imported = JSON.parse(reader.result);
-                    if (!imported || !Array.isArray(imported.history)) {
-                        throw new Error("Invalid file format. Expected { history: [...] }");
-                    }
-                    const res = await fetch(`${API_URL}conversation/import`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(imported)
-                    });
-                    if (!res.ok) {
-                         const err = await res.json();
-                         throw new Error(err.error || `HTTP ${res.status}`);
-                    }
-                    const data = await res.json();
-                    if (data.success) {
-                        localHistory = imported.history;
-                        localStorage.setItem(STORAGE_KEY, JSON.stringify(localHistory));
-                        await fetchHistory();
-                        showMessage('History imported. Context restored!');
-                    } else {
-                        throw new Error(data.error);
-                    }
-                } catch (error) {
-                    showMessage(`Import failed: ${error.message}`);
-                }
-            };
-            reader.readAsText(file);
-        }
-        
-        async function clearHistory() {
-            try {
-                const res = await fetch(`${API_URL}conversation/import`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ history: [] })
-                });
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                localHistory = [];
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(localHistory));
-                renderHistory();
-                showMessage('History cleared.');
-                
-                // Also clear the modal
-                const container = document.getElementById('resultContainer');
-                if (container) container.innerHTML = "";
-                
-            } catch (error) {
-                showMessage('Failed to clear history.');
-            }
-        }
-
-        // --- Query ---
         async function performTruthQuery(query, challengeResponse = '') {
-            if (!query || !query.trim()) return showMessage('Enter a query.');
+            if (!query?.trim()) return showMessage('Query required.');
+            if (isChallenging) return;
             
-            const sanitizedQuery = sanitizeQuery(query);
             openModal();
             const container = document.getElementById('resultContainer');
-            if (!container) return;
-            
-            // Add query to chat
-            const queryBlock = document.createElement('div');
-            queryBlock.className = 'conversation-block';
-            queryBlock.innerHTML = `<h4>Query: ${sanitizedQuery}</h4>`;
-            container.appendChild(queryBlock);
-            
-            // Add placeholder for answer
-            const loadingId = `loading-${Date.now()}`;
-            const answerBlock = document.createElement('div');
-            answerBlock.className = 'content';
-            answerBlock.id = loadingId;
-            answerBlock.innerHTML = 'Scanning...';
-            queryBlock.appendChild(answerBlock);
-
-            scrollToBottom();
+            container.innerHTML = `<div class="conversation-block"><h4>Query: ${query}</h4><div class="content">Thinking...</div></div>`;
 
             try {
-                const payload = {
-                    input: query,
-                    model: MODEL,
-                    challengeResponse: challengeResponse
+                const parse = await loadMarked();
+                const payload = { 
+                    input: query, 
+                    model: MODEL 
                 };
+                
+                if (challengeResponse) {
+                    payload.challengeResponse = challengeResponse;
+                }
+
+                // Add session context for better follow-ups
+                const sessionContext = getSessionContext();
+                if (sessionContext) {
+                    payload.context = sessionContext;
+                }
+
                 const res = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                const data = await res.json();
                 
-                const answerContainer = document.getElementById(loadingId);
-                if (!answerContainer) return;
+                const data = await res.json();
 
                 if (!res.ok) {
-                    if (data.error === 'CHALLENGE_REQUIRED') {
-                        // Remove the placeholder blocks
-                        queryBlock.remove(); 
-                        const passphrase = await promptForPassphrase(data.challengeQuestion);
-                        return performTruthQuery(query, passphrase); // Re-run query
+                    if (data.error === 'CHALLENGE_FAILED' && !isChallenging) {
+                        isChallenging = true;
+                        const pass = await promptForPassphrase(data.challengeQuestion);
+                        isChallenging = false;
+                        return performTruthQuery(query, pass);
                     }
-                    throw new Error(data.error || `HTTP ${res.status}`);
+                    throw new Error(data.error || 'Unknown error');
                 }
+
+                // SUCCESS: Save to both local storage and current session
+                saveToLocalHistory(query, data.answer, MODEL);
+                addToCurrentSession(query, data.answer, MODEL);
+
+                container.innerHTML = `
+                    <div class="conversation-block">
+                        <h4>Query: ${query}</h4>
+                        <div class="content">${parse(data.answer)}</div>
+                        <small>Model: ${data.model} • ${new Date(data.created).toLocaleString()}</small>
+                        ${data.cached ? '<br><small><em>(Cached)</em></small>' : ''}
+                    </div>`;
+
+                renderCombinedHistory();
                 
-                // Success
-                answerContainer.innerHTML = parse(data.answer);
+            } catch (err) {
+                container.innerHTML = `<div class="conversation-block"><h4>Query: ${query}</h4><div class="content">Error: ${err.message}</div></div>`;
+                showMessage('Query failed. Saved locally only.');
                 
-                const meta = document.createElement('small');
-                meta.textContent = `Model: ${data.model} • ${new Date(data.timestamp).toLocaleString()}`;
-                if(data.cached) {
-                    meta.textContent += " (Cached)";
-                    meta.style.color = "var(--accent-color)";
-                    meta.style.fontWeight = "bold";
-                }
-                queryBlock.appendChild(meta);
-
-
-                localHistory.push({ query, answer: data.answer, model: data.model, timestamp: data.timestamp });
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(localHistory));
-                // No need to fetchHistory(), just render
-                renderHistory(); 
-
-            } catch (error) {
-                const answerContainer = document.getElementById(loadingId);
-                if (answerContainer) {
-                    answerContainer.innerHTML = `Error: ${error.message}`;
-                } else {
-                    queryBlock.innerHTML += `<div class="content">Error: ${error.message}</div>`;
-                }
+                // Fallback: Save query locally even if API fails
+                saveToLocalHistory(query, `Error: ${err.message}`, MODEL);
             }
-            
-            scrollToBottom();
         }
 
-        // --- Event Listeners ---
-        document.addEventListener('DOMContentLoaded', () => {
-            loadMarked(); // Load markdown parser
-        
-            document.getElementById('queryInput').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    performTruthQuery(e.target.value);
-                    e.target.value = ""; // Clear input after send
-                }
-            });
+        async function newChat() {
+            if (!confirm('Start new chat? This clears remote context but keeps your local history.')) return;
             
-            document.getElementById('historyToggle').addEventListener('click', toggleHistory);
-            document.getElementById('closeHistory').addEventListener('click', toggleHistory);
-            document.getElementById('close-modal').addEventListener('click', closeModal);
-            
-            document.getElementById('copyResult').addEventListener('click', () => {
-                const lastContent = document.querySelector('.conversation-block:last-child .content');
-                if (lastContent) {
-                    copyToClipboard(lastContent.textContent);
+            try {
+                const res = await fetch(`${API_URL}/conversation/new`, { method: 'POST' });
+                if (res.ok) {
+                    clearCurrentSession();
+                    showMessage('New chat started. Remote context cleared.');
+                    renderCombinedHistory();
                 } else {
-                    showMessage('No result to copy.');
+                    throw new Error(`HTTP ${res.status}`);
                 }
-            });
-            
-            document.getElementById('ttsBtn').addEventListener('click', () => {
-                if (speechSynthesis.speaking) {
-                    speechSynthesis.cancel();
-                    return;
-                }
-                const lastContent = document.querySelector('.conversation-block:last-child .content');
-                if (lastContent && lastContent.textContent) {
-                    const utterance = new SpeechSynthesisUtterance(lastContent.textContent);
-                    speechSynthesis.speak(utterance);
-                } else {
-                    showMessage('No result to read.');
-                }
-            });
-            
-            document.getElementById('newChat').addEventListener('click', () => {
-                clearHistory(); // This clears the DO and the modal
-                showMessage('New chat started.');
-            });
-            
-            document.getElementById('exportHistory').addEventListener('click', exportHistory);
-            document.getElementById('importTrigger').addEventListener('click', () => {
-                document.getElementById('importHistory').click(); // Trigger hidden file input
-            });
-            document.getElementById('importHistory').addEventListener('change', importHistory);
-            document.getElementById('clearHistory').addEventListener('click', clearHistory);
-            
-            document.getElementById('modelSelector').addEventListener('change', (e) => {
-                MODEL = e.target.value;
-                localStorage.setItem('truth-model', MODEL);
-                showMessage(`Model set to ${e.target.options[e.target.selectedIndex].text}`);
-            });
-            
-            document.querySelectorAll('.mode-toggle button').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.body.dataset.mode = btn.dataset.mode;
-                    localStorage.setItem('theme', btn.dataset.mode);
-                });
-            });
-            
-            document.getElementById('exportPromptBtn').addEventListener('click', exportHistory);
+            } catch (err) {
+                // Fallback: clear session locally anyway
+                clearCurrentSession();
+                showMessage('New chat started (local only). Remote clear failed.');
+                renderCombinedHistory();
+            }
+        }
 
-            // --- Initialize ---
-            document.body.dataset.mode = localStorage.getItem('theme') || 'silvery';
-            document.getElementById('modelSelector').value = MODEL;
-            
-            // Fetch history *after* DOM is loaded
-            fetchHistory(); 
-            
-            setTimeout(() => {
-                const typedText = document.getElementById('typedText');
-                if (typedText) {
-                    typedText.classList.add('is-typing');
-                    setTimeout(() => {
-                        typedText.classList.remove('is-typing');
-                        typedText.classList.add('is-done');
-                    }, 3500);
-                }
-            }, 100);
+        // ==================== EVENT LISTENERS ====================
+
+        // Enter key still works
+        document.getElementById('queryInput').addEventListener('keydown', e => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                performTruthQuery(e.target.value);
+                e.target.value = '';
+            }
         });
+
+        // Enter button now properly works
+        document.getElementById('enterButton').addEventListener('click', () => {
+            const input = document.getElementById('queryInput');
+            if (input.value.trim()) {
+                performTruthQuery(input.value);
+                input.value = '';
+            }
+        });
+
+        document.getElementById('historyToggle').addEventListener('click', toggleHistory);
+        document.getElementById('newChatBtn').addEventListener('click', newChat);
+        document.getElementById('closeHistory').addEventListener('click', toggleHistory);
+        document.getElementById('close-modal').addEventListener('click', closeModal);
+        
+        document.getElementById('copyResult').addEventListener('click', () => {
+            const text = document.querySelector('.conversation-block .content')?.innerText || '';
+            copyToClipboard(text);
+        });
+        
+        document.getElementById('ttsBtn').addEventListener('click', () => {
+            const text = document.querySelector('.conversation-block .content')?.innerText || '';
+            const utter = new SpeechSynthesisUtterance(text);
+            speechSynthesis.speak(utter);
+        });
+
+        document.getElementById('saveLocal').addEventListener('click', () => {
+            const query = document.querySelector('.conversation-block h4')?.textContent.replace('Query: ', '') || '';
+            const answer = document.querySelector('.conversation-block .content')?.innerText || '';
+            if (query && answer) {
+                saveToLocalHistory(query, answer, MODEL);
+                showMessage('Saved to local history');
+            }
+        });
+
+        document.getElementById('exportHistory').addEventListener('click', () => {
+            const exported = exportLocalHistory();
+            showMessage(`Exported ${exported.conversations.length} conversations`);
+        });
+
+        document.getElementById('importTrigger').addEventListener('click', () => {
+            document.getElementById('importHistory').click();
+        });
+
+        document.getElementById('importHistory').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            try {
+                const result = await importLocalHistory(file);
+                showMessage(`Imported ${result.imported} conversations. Total: ${result.total}`);
+                renderCombinedHistory();
+            } catch (error) {
+                showMessage(`Import failed: ${error.message}`);
+            }
+            
+            e.target.value = '';
+        });
+
+        document.getElementById('clearLocalHistory').addEventListener('click', () => {
+            if (confirm('Clear ALL local history? This cannot be undone.')) {
+                clearLocalHistory();
+                showMessage('Local history cleared');
+                renderCombinedHistory();
+            }
+        });
+
+        // Theme buttons in menu
+        document.querySelectorAll('.theme-buttons button').forEach(b => {
+            b.addEventListener('click', () => {
+                document.body.dataset.mode = b.dataset.mode;
+                localStorage.setItem('theme', b.dataset.mode);
+                showMessage(`Theme: ${b.dataset.mode}`);
+            });
+        });
+
+        // Model selector in menu
+        document.getElementById('modelSelector').addEventListener('change', e => {
+            MODEL = e.target.value;
+            localStorage.setItem('truth-model', MODEL);
+            showMessage(`Model: ${e.target.options[e.target.selectedIndex].text}`);
+        });
+
+        document.getElementById('exportPromptBtn').addEventListener('click', () => {
+            exportLocalHistory();
+        });
+
+        // ==================== INITIALIZATION ====================
+
+        function initializeApp() {
+            // Set theme
+            document.body.dataset.mode = localStorage.getItem('theme') || 'silvery';
+            
+            // Set model
+            const savedModel = localStorage.getItem('truth-model');
+            if (savedModel) {
+                const selector = document.getElementById('modelSelector');
+                if ([...selector.options].some(o => o.value === savedModel)) {
+                    selector.value = savedModel;
+                    MODEL = savedModel;
+                }
+            }
+
+            // Focus input
+            setTimeout(() => document.getElementById('queryInput').focus(), 100);
+            
+            // Render initial history
+            renderCombinedHistory();
+
+            // Typing animation
+            setTimeout(() => {
+                const el = document.getElementById('typedText');
+                el.classList.add('is-typing');
+                setTimeout(() => {
+                    el.classList.remove('is-typing');
+                    el.classList.add('is-done');
+                }, 3500);
+            }, 100);
+
+            // Show stats
+            console.log(`Truth Engine Ready - Local: ${localHistory.length} conversations, Session: ${currentSession.length} messages`);
+        }
+
+        // Start the app
+        initializeApp();
     </script>
 </body>
 </html>
-
-
