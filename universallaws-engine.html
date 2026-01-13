@@ -3,118 +3,339 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Truth Engine :: Universal Laws</title>
+  <title>truth-engine</title>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Merriweather:wght@300;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg-color: #14141d;
-      --primary-accent: #a98b4b;     /* Reserved Bronze */
-      --secondary-accent: #0055ff;   /* Truth Engine Blue */
-      --text-light: #e0dcd7;
-      --text-dark: #b8b3a8;
-      --border: #353545;
-      --block-shade: #1a1a25;
-      --paypal-gold: #ffc439;
-    }
-    *{box-sizing:border-box;transition:all .3s ease}
-    body{
-      margin:0;background:var(--bg-color);color:var(--text-light);font-family:'Cinzel',serif;
-      min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
-      padding:40px 20px;background-image:url('https://www.transparenttextures.com/patterns/dark-matter.png');
-      text-align:center;text-transform:uppercase;
-    }
-    .container{
-      max-width:800px;width:100%;padding:3rem 2rem;
-      border:1px solid var(--border);background:rgba(20,20,29,.95);
-      box-shadow:0 0 40px rgba(169,139,75,.2);position:relative;
-    }
-    .header h1{
-      font-size:clamp(2.2rem,7vw,4.5rem);color:var(--primary-accent);
-      text-shadow:0 0 15px rgba(169,139,75,.5);letter-spacing:.2em;margin:0;
-    }
-    .content{
-      margin:3rem 0;min-height:45vh;padding:2rem 1.5rem;
-      background:var(--block-shade);border-left:6px solid var(--primary-accent);
-      box-shadow:inset 0 3px 12px rgba(0,0,0,.4);overflow-y:auto;
-      font-family:'Merriweather',serif;font-size:1.15rem;line-height:1.9;
-      text-transform:none;color:var(--text-light);
-    }
-    .input-group{position:relative;margin-top:2rem}
-    textarea{
-      width:100%;height:140px;background:var(--block-shade);border:3px solid var(--primary-accent);
-      border-radius:12px;padding:20px 90px 20px 20px;font-family:'Merriweather',serif;
-      font-size:1.2rem;color:var(--text-light);outline:none;resize:none;
-    }
-    button{
-      position:absolute;right:18px;bottom:18px;width:68px;height:68px;
-      background:var(--primary-accent);color:#000;border:none;border-radius:50%;
-      font-size:38px;font-weight:900;box-shadow:0 6px 25px rgba(169,139,75,.7);
-      cursor:pointer;display:grid;place-items:center;
-    }
-    button:hover{
-      background:#c7a566;transform:scale(1.12);
-      box-shadow:0 10px 35px rgba(169,139,75,.9);
-    }
-    .thinking{
-      text-align:center;padding:90px 20px;font-size:2.4rem;color:var(--primary-accent);
-      animation:p 2s infinite;letter-spacing:3px;
-    }
-    @keyframes p{0%,100%{opacity:.3}50%{opacity:1}}
-    footer{margin-top:4rem;font-size:.8rem;color:var(--text-dark);text-transform:none}
+    body{background:#000;color:#fff;margin:0;height:100dvh;display:grid;place-items:center;font-family:monospace}
+    .card{width:92vmin;max-width:800px;background:#000;border:3px solid rgba(250,204,21,.3);border-radius:16px}
+    .header{background:#000;border-bottom:2px solid #facc15;padding:20px;text-align:center;font-size:28px;font-weight:300}
+    .content{padding:20px;height:50dvh;overflow-y:auto}
+    .input-group{padding:20px;position:relative}
+    textarea{width:100%;height:140px;background:rgba(0,0,0,.4);border:2px solid #facc15;border-radius:32px;color:#fff;padding:20px 80px 20px 20px;font-size:18px;resize:none;outline:none;box-sizing:border-box}
+    button{position:absolute;right:30px;bottom:30px;width:55px;height:55px;background:#facc15;color:#000;border:none;border-radius:50%;font-size:32px;font-weight:900;box-shadow:0 4px 20px rgba(250,204,21,.5);display:grid;place-items:center;cursor:pointer}
+    button:hover{transform:scale(1.1);box-shadow:0 6px 30px rgba(250,204,21,.7)}
+    .thinking{text-align:center;padding:60px;font-size:48px;animation:p 2s infinite;color:#facc15}
+    @keyframes p{0%,100%{opacity:.4}50%{opacity:1}}
+    .workflow-step{margin:10px 0;padding:10px;background:rgba(250,204,21,.1);border-radius:8px;font-size:14px}
+    .workflow-step.success{background:rgba(34,197,94,.2);border-left:4px solid #22c55e}
+    .workflow-step.error{background:rgba(239,68,68,.2);border-left:4px solid #ef4444}
+    .workflow-step.pending{background:rgba(59,130,246,.2);border-left:4px solid #3b82f6}
+    .preset-selector{padding:10px;margin-bottom:10px}
+    .preset-selector select{background:#000;color:#fff;border:1px solid #facc15;padding:5px;border-radius:4px}
+    .options{display:flex;gap:10px;margin-bottom:10px;font-size:12px}
+    .options label{display:flex;align-items:center;gap:5px}
+    .options input[type="checkbox"]{accent-color:#facc15}
   </style>
 </head>
 <body>
-<div class="container">
-  <header class="header">
-    <h1>Truth Engine</h1>
-  </header>
-
-  <div class="content" id="c">
-    <div class="thinking">awaiting the fixed law...</div>
-  </div>
-
+<div class="card">
+  <div class="header">truth-engine</div>
+  <div class="content" id="c"></div>
   <div class="input-group">
-    <textarea id="i" placeholder="speak the axiom..."></textarea>
+    <div class="preset-selector">
+      <label>Preset: 
+        <select id="preset">
+          <option value="truth-engine">truth-engine</option>          
+        </select>
+      </label>
+    </div>
+    <div class="options">
+      <label><input type="checkbox" id="enableSearch"> Web Search</label>
+      <label><input type="checkbox" id="enableTools"> Tools</label>
+      <label><input type="checkbox" id="enableReasoning"> Reasoning</label>
+    </div>
+    <textarea id="i" placeholder="Ask anything...">🫠</textarea>
     <button onclick="go()">⏎</button>
   </div>
-
-  <footer>© 2025 AI-Nspired :: The Fixed Law Pillar</footer>
 </div>
 
 <script>
 const c = document.getElementById('c');
 const i = document.getElementById('i');
+const WORKER_URL = 'https://orproxy.ai-n.workers.dev'; // Replace with your worker URL
+
+// Universal AI Proxy Class
+class UniversalAIProxy {
+  constructor(workerUrl) {
+    this.workerUrl = workerUrl;
+    this.sessionId = this.getOrCreateSessionId();
+  }
+
+  getOrCreateSessionId() {
+    let sessionId = localStorage.getItem('ai-session-id');
+    if (!sessionId) {
+      sessionId = 'session-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem('ai-session-id', sessionId);
+    }
+    return sessionId;
+  }
+
+  async streamChat(messages, options = {}) {
+    const requestBody = {
+      messages,
+      sessionId: this.sessionId,
+      userId: options.userId || 'anonymous',
+      preset: options.preset || 'default',
+      enableSearch: options.enableSearch || false,
+      maxContext: options.maxContext || 32000
+    };
+
+    // Save to local storage
+    this.saveToLocalStorage('last-request', requestBody);
+
+    const response = await fetch(`${this.workerUrl}/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestBody)
+    });
+
+    if (!response.body) {
+      throw new Error('No response body');
+    }
+
+    return this.processStream(response.body);
+  }
+
+  async processStream(stream) {
+    const reader = stream.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let fullResponse = '';
+
+    return new ReadableStream({
+      async start(controller) {
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop() || '';
+
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const data = line.slice(6);
+                if (data === '[DONE]') {
+                  controller.close();
+                  return;
+                }
+
+                try {
+                  const parsed = JSON.parse(data);
+                  const delta = parsed.choices && parsed.choices[0] && parsed.choices[0].delta;
+                  
+                  if (delta && delta.content) {
+                    fullResponse += delta.content;
+                    controller.enqueue(delta.content);
+                  }
+
+                  // Handle tool calls
+                  if (delta && delta.tool_calls) {
+                    controller.enqueue(`\n\nðŸ”§ **Tool Call**: ${delta.tool_calls[0].function.name}\n`);
+                  }
+
+                  // Handle reasoning tokens
+                  if (parsed.reasoning) {
+                    controller.enqueue(`\n\nðŸ’­ **Reasoning**: ${parsed.reasoning}\n`);
+                  }
+                } catch (e) {
+                  // Skip malformed JSON
+                  continue;
+                }
+              }
+            }
+          }
+        } catch (error) {
+          controller.error(error);
+        }
+      }
+    });
+  }
+
+  async getState() {
+    const response = await fetch(`${this.workerUrl}/state?sessionId=${this.sessionId}`);
+    const state = await response.json();
+    
+    // Sync to local storage
+    this.saveToLocalStorage('session-state', state);
+    
+    return state;
+  }
+
+  saveToLocalStorage(key, data) {
+    try {
+      localStorage.setItem(key, JSON.stringify(data));
+    } catch (error) {
+      console.error('Local storage error:', error);
+    }
+  }
+
+  getFromLocalStorage(key) {
+    try {
+      const data = localStorage.getItem(key);
+      return data ? JSON.parse(data) : null;
+    } catch (error) {
+      console.error('Local storage error:', error);
+      return null;
+    }
+  }
+}
+
+// Initialize proxy
+const aiProxy = new UniversalAIProxy(WORKER_URL);
 
 addEventListener('load', () => {
   const q = new URLSearchParams(location.search).get('q');
-  if (q) { i.value = q.replace(/\+/g, ' '); go(); }
+  if (q) { i.value = q.replace(/\s+/g, ' '); go(); }
 });
 
 async function go() {
   let q = i.value.trim();
   if (!q) return;
   i.value = '';
-  c.innerHTML = '<div class="thinking">consulting the speakeasy...</div>';
+  
+  // Get options
+  const preset = document.getElementById('preset').value;
+  const enableSearch = document.getElementById('enableSearch').checked;
+  const enableTools = document.getElementById('enableTools').checked;
+  const enableReasoning = document.getElementById('enableReasoning').checked;
+  
+  // Display workflow steps
+  let workflowLog = '';
+  const logStep = (step, status, message) => {
+    workflowLog += `<div class="workflow-step ${status}"><strong>${step}:</strong> ${message}</div>`;
+    c.innerHTML = workflowLog + '<div class="thinking">processing...</div>';
+  };
 
   const key = q.toLowerCase().replace(/\s+/g, '+');
-  const cached = localStorage.getItem('truth:' + key);
-  if (cached) return done(cached);
+  const cached = localStorage.getItem('ai-cache:' + key);
+  if (cached) {
+    logStep('Cache', 'success', 'Found cached result');
+    return done(cached);
+  }
 
-  let answer = null;
+  let answer = '';
+  let workflow = [];
 
-  try { const r = await fetch('https://truthengine.ai-n.workers.dev/api/ai/truth', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({input:q,model:'polaris-alpha'})}); if (r.ok) { const j = await r.json(); if (j.answer) answer = j.answer; } } catch(e) {}
-  if (!answer) try { const r = await fetch('https://truth.ai-n.workers.dev/api/truth/resolve', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({input:key})}); if (r.ok) { const j = await r.json(); if (j.answer) answer = j.answer; } } catch(e) {}
-  if (!answer) try { const r = await fetch('https://ai-proxy.ai-n.workers.dev/api/chat', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q})}); if (r.ok) { const j = await r.json(); answer = j.response || j.answer || 'No truth found'; } } catch(e) {}
+  // Step 1: Local State Check
+  logStep('Local State', 'pending', 'Checking local session state...');
+  try {
+    const localState = aiProxy.getFromLocalStorage('session-state');
+    if (localState && localState.messages.length > 0) {
+      workflow.push('âœ… Local State: Found session history');
+      logStep('Local State', 'success', `Found ${localState.messages.length} messages in history`);
+    } else {
+      workflow.push('âŒ Local State: No session history');
+      logStep('Local State', 'error', 'No session history found');
+    }
+  } catch(e) {
+    workflow.push(`âŒ Local State: ${e.message}`);
+    logStep('Local State', 'error', e.message);
+  }
 
-  answer = answer || '**No truth found**';
-  localStorage.setItem('truth:' + key, answer);
+  // Step 2: Remote State Sync
+  logStep('Remote Sync', 'pending', 'Syncing with remote state...');
+  try {
+    const remoteState = await aiProxy.getState();
+    if (remoteState && remoteState.messages.length > 0) {
+      workflow.push('âœ… Remote Sync: State synchronized');
+      logStep('Remote Sync', 'success', 'State synchronized with server');
+    } else {
+      workflow.push('âŒ Remote Sync: No remote state');
+      logStep('Remote Sync', 'error', 'No remote state found');
+    }
+  } catch(e) {
+    workflow.push(`âŒ Remote Sync: ${e.message}`);
+    logStep('Remote Sync', 'error', e.message);
+  }
+
+  // Step 3: AI Processing
+  logStep('AI Processing', 'pending', `Using preset: ${preset}${enableSearch ? ' + Search' : ''}${enableTools ? ' + Tools' : ''}${enableReasoning ? ' + Reasoning' : ''}`);
+  
+  try {
+    const messages = [{ role: 'user', content: q }];
+    const options = {
+      preset,
+      enableSearch,
+      enableTools,
+      enableReasoning,
+      userId: 'user-' + Date.now()
+    };
+
+    const stream = await aiProxy.streamChat(messages, options);
+    const reader = stream.getReader();
+    
+    workflowLog += `<div class="workflow-step success"><strong>AI Processing:</strong> Streaming response...</div>`;
+    c.innerHTML = workflowLog + '<div id="response"></div>';
+    
+    const responseDiv = document.getElementById('response');
+    let fullAnswer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      
+      fullAnswer += value;
+      responseDiv.innerHTML = marked.parse(fullAnswer);
+      c.scrollTop = c.scrollHeight;
+    }
+
+    answer = fullAnswer;
+    workflow.push('👊… AI Processing: Response completed');
+    
+  } catch(e) {
+    workflow.push(` AI Processing: ${e.message}`);
+    logStep('AI Processing', 'error', e.message);
+    return;
+  }
+
+  // Step 4: Cache Result
+  logStep('Caching', 'pending', 'Caching result...');
+  try {
+    localStorage.setItem('ai-cache:' + key, answer);
+    workflow.push('… Caching: Result cached locally');
+    logStep('Caching', 'success', 'Result cached for future use');
+  } catch(e) {
+    workflow.push(` Caching: ${e.message}`);
+    logStep('Caching', 'error', e.message);
+  }
+
   done(answer);
 }
 
-function done(md) {
-  c.innerHTML = marked.parse(md);
+function done(answer) {
+  c.innerHTML = `
+    <div style="margin-bottom: 20px; padding: 15px; background: rgba(34,197,94,.1); border-radius: 8px; border-left: 4px solid #22c55e;">
+      <strong>âœ… Complete</strong>
+    </div>
+    <div style="background: rgba(250,204,21,.05); padding: 20px; border-radius: 12px; border: 1px solid rgba(250,204,21,.2);">
+      ${marked.parse(answer)}
+    </div>
+  `;
+  c.scrollTop = c.scrollHeight;
 }
+
+// Keyboard shortcuts
+i.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+    e.preventDefault();
+    go();
+  }
+});
+
+// Auto-save input
+i.addEventListener('input', () => {
+  localStorage.setItem('ai-input-draft', i.value);
+});
+
+// Restore draft on load
+addEventListener('load', () => {
+  const draft = localStorage.getItem('ai-input-draft');
+  if (draft && !i.value) {
+    i.value = draft;
+  }
+});
 </script>
 </body>
 </html>
